@@ -1,0 +1,13 @@
+﻿Ticket;Título;Prioridade;Conteúdo trabalhado;Coluna;Pontos (1/2/3/5/8);Branch;Link do Pull Request
+US01;US01 · Estrutura semântica e acessível da página;Alta;HTML semântico, acessibilidade e SEO;Backlog;;;
+US02;US02 · Catálogo de serviços;Alta;fetch, async/await e três estados;Backlog;;;
+US03;US03 · Formulário de novo agendamento;Alta;Formulários, validação e eventos;Backlog;;;
+US04;US04 · Endereço automático por CEP;Média;fetch em API pública e tratamento de erros;Backlog;;;
+US05;US05 · Alerta de feriados;Média;fetch, cache e localStorage;Backlog;;;
+US06;US06 · Agenda do dia: lista, busca, filtros e atalhos;Alta;DOM, seletores, eventos de mouse e teclado;Backlog;;;
+US07;US07 · Regras de negócio e fechamento do dia;Alta;Classes, herança, this, callback, closure e arrays;Backlog;;;
+US08;US08 · Persistência e exportação dos dados;Alta;localStorage e JSON;Backlog;;;
+US09;US09 · Relógio e lembretes de atendimento;Média;setInterval e setTimeout;Backlog;;;
+US10;US10 · Layout responsivo e identidade visual;Alta;CSS, Flexbox, especificidade e responsividade;Backlog;;;
+US11;US11 · Projeto Node.js e relatório de fechamento;Alta;npm, global vs local, ESM, CommonJS e módulos;Backlog;;;
+US12;US12 · Depuração e relatório de bug;Média;Depuração e debugger no VSCode;Backlog;;;

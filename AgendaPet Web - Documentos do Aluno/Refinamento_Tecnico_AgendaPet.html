@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Refinamento Técnico — AgendaPet Web (Patinhas &amp; Cia)</title>
+<style>
+  :root{
+    --navy:#1b4f72; --navy-dark:#123049; --zebra:#eef4f8;
+    --note-bg:#eaf2f8; --warn-bg:#fff3cd; --code-bg:#1e1e1e;
+    --verde:#2e7d32; --verde-dark:#1b5e20;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#263238;line-height:1.55;font-size:13.5px}
+  .wrap{max-width:980px;margin:auto;padding:28px 34px}
+  h1{color:var(--navy);text-align:center;font-size:27px;margin-bottom:4px}
+  h1 + .subtitle{text-align:center;color:#37474f;font-size:15.5px;font-weight:bold;margin-top:0;margin-bottom:18px}
+  .meta{font-size:12.5px;color:#455a64;border-bottom:1px solid #cfd8dc;padding-bottom:16px;margin-bottom:16px}
+  .meta b{color:#263238}
+  h2.encontro,h2.section,h2.conexao,h2.aula{background:var(--navy);color:#fff;padding:10px 16px;border-radius:4px;font-size:17px;margin-top:34px;margin-bottom:14px;letter-spacing:.2px}
+  h3.bloco{color:var(--navy-dark);border-bottom:2px solid var(--navy);padding-bottom:4px;font-size:15px;margin-top:26px}
+  h3.dia{background:var(--navy-dark);color:#fff;padding:8px 14px;border-radius:4px;font-size:14.5px;margin-top:22px;margin-bottom:10px}
+  h3.questao{color:var(--navy-dark);font-size:14px;margin-top:22px;margin-bottom:2px}
+  .tempo{color:#607d8b;font-weight:normal;font-size:12.5px}
+  .enunciado{font-weight:bold;margin:4px 0 8px}
+  .obj-encontro,.objetivo-encontro{background:var(--zebra);border-left:4px solid var(--navy);padding:10px 14px;margin:14px 0 20px;font-size:13px}
+  .fala{background:var(--zebra);border-radius:5px;padding:10px 14px;margin:10px 0}
+  .fala b.label{color:var(--navy);display:block;margin-bottom:3px}
+  pre{background:var(--code-bg);color:#f8f8f2;padding:12px 14px;border-radius:6px;overflow:auto;font-size:11.8px;line-height:1.5;margin:10px 0;white-space:pre-wrap}
+  code{font-family:Consolas,Menlo,monospace}
+  :not(pre) > code{background:#eef4f8;color:var(--navy);padding:1px 5px;border-radius:3px;font-size:12px}
+  .pergunta{background:#f1f8f4;border-left:4px solid #2a9d8f;padding:9px 14px;margin:10px 0;font-size:13px}
+  .pergunta b{color:#1d7a6e}
+  .nota,.dica,.fio{background:var(--note-bg);border-left:4px solid var(--navy);border-radius:4px;padding:10px 14px;margin:12px 0;font-size:12.8px}
+  .nota .titulo,.dica .titulo,.fio .titulo{font-weight:bold;color:var(--navy);display:block;margin-bottom:3px}
+  .atencao,.apoio,.observacao{background:var(--warn-bg);border-left:4px solid #e08e00;border-radius:4px;padding:10px 14px;margin:12px 0;font-size:12.8px}
+  .atencao .titulo,.observacao .titulo{font-weight:bold;color:#8a5c00;display:block;margin-bottom:3px}
+  .apoio b{color:#8a5c00}
+  .realizado,.fechamento{background:#eef7f2;border-left:4px solid #2a9d8f;border-radius:4px;padding:10px 14px;margin:12px 0;font-size:12.8px}
+  .realizado .titulo{font-weight:bold;color:#1d7a6e;display:block;margin-bottom:3px}
+  .fechamento{margin:20px 0 8px;font-size:13px}
+  .fechamento b{color:#1d7a6e}
+  .erro-comum{background:#fdecea;border-left:4px solid #d9534f;border-radius:4px;padding:10px 14px;margin:10px 0 22px;font-size:12.8px}
+  .erro-comum .titulo,.erro-comum b:first-child{font-weight:bold;color:#a83a32}
+  .erro-comum .titulo{display:block;margin-bottom:3px}
+  .checklist-final{background:var(--navy);color:#fff;padding:11px 16px;border-radius:4px;font-size:16px;margin-top:36px}
+  table{width:100%;border-collapse:collapse;margin:10px 0 20px;font-size:12.6px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px}
+  td{padding:7px 10px;border-bottom:1px solid #e3e9ec;vertical-align:top}
+  tr:nth-child(even) td{background:var(--zebra)}
+  td.correta{font-weight:bold;color:#1d7a6e}
+  .slides{white-space:nowrap;color:var(--navy);font-weight:bold}
+  .comentario{font-size:12.5px;color:#455a64;margin:0 0 18px}
+  .comentario b{color:#263238}
+  .conferencia{background:var(--zebra);border-left:4px solid var(--navy);border-radius:4px;padding:12px 16px;margin-top:16px;font-size:12.8px}
+  .conferencia li{margin-bottom:6px}
+  .comparacao{display:flex;gap:16px;margin:12px 0;flex-wrap:wrap}
+  .comparacao .lado{flex:1;min-width:280px}
+  .rotulo-antes,.rotulo-depois{display:inline-block;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:3px 3px 0 0}
+  .rotulo-antes{background:#d9534f}.rotulo-depois{background:#2a9d8f}
+  .caixa-antes{border:2px solid #d9534f;border-top:none;border-radius:0 0 6px 6px}
+  .caixa-depois{border:2px solid #2a9d8f;border-top:none;border-radius:0 0 6px 6px}
+  .caixa-antes pre,.caixa-depois pre{margin:0;border-radius:0}
+  .checklist li{list-style:none;margin-bottom:7px;padding-left:24px;position:relative;font-size:13px}
+  .checklist li::before{content:"✓";position:absolute;left:0;color:#2a9d8f;font-weight:bold}
+  .video-item{border:1px solid #e3e9ec;border-radius:6px;padding:10px 14px;margin-bottom:10px}
+  .video-item .titulo-video{font-weight:bold;color:var(--navy-dark);display:block;margin-bottom:2px}
+  .video-item .canal{color:#607d8b;font-size:12px}
+  .video-item .desc{margin:4px 0 0;font-size:12.6px}
+  .paleta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 18px}
+  .cor{width:140px;border:1px solid #cfd8dc;border-radius:8px;overflow:hidden;font-size:11.5px}
+  .cor .amostra{height:46px}
+  .cor .info{padding:6px 8px}
+  a{color:var(--navy)}
+  ul{margin-top:6px}
+  li{margin-bottom:5px}
+  hr{border:none;border-top:1px solid #cfd8dc;margin:26px 0}
+  .pagebreak{break-before:page}
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid #e3e9ec;color:#78909c;font-size:11px;text-align:center}
+  @media print{ .wrap{padding:0} a{color:var(--navy) !important;text-decoration:underline} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Refinamento Técnico — AgendaPet Web</h1>
+<p class="subtitle">Como construir: arquivos, responsabilidades, contratos de dados, fluxos, modelos de código e plano de testes</p>
+<p class="meta">
+  Desenvolvimento Front-End [React] T4 | Módulo 1 | Semanas 13 e 14 | Projeto: <b>Mini-Projeto Avaliativo M1.2 (AgendaPet Web)</b><br>
+  Leia o <b>Documento Funcional</b> antes (ele diz <i>o quê</i> e <i>por quê</i>). Aqui está o <b>como</b>. Os modelos de código são <b>esqueletos para você completar</b> (procure os <code>TODO</code>): não são a solução pronta. Tudo o que vier de IA precisa ser revisado e explicado por você (veja a seção 14).
+</p>
+
+<h2 class="section">1. Visão técnica</h2>
+<table>
+  <tr><th>Item</th><th>Decisão</th></tr>
+  <tr><td>Linguagens</td><td>HTML, CSS e JavaScript puros (sem bibliotecas nem frameworks) + Node.js 20+ para os scripts de terminal</td></tr>
+  <tr><td>Módulos</td><td><b>ESM</b> (<code>"type": "module"</code> no <code>package.json</code>). Um script em <b>CommonJS</b> (<code>.cjs</code>) para demonstrar a diferença</td></tr>
+  <tr><td>Servidor local</td><td><code>http-server</code>, instalado como <b>devDependency local</b>; roda com <code>npm start</code> (porta 5500, sem cache)</td></tr>
+  <tr><td>Persistência</td><td><code>localStorage</code> (somente texto: <code>JSON.stringify</code>/<code>JSON.parse</code>), todas as chaves com prefixo <code>agendapet:</code></td></tr>
+  <tr><td>APIs externas</td><td><b>ViaCEP</b> (endereço) e <b>BrasilAPI</b> (feriados), ambas sem chave e com CORS liberado</td></tr>
+  <tr><td>Princípio central</td><td><b>Um arquivo, uma responsabilidade.</b> E a regra de negócio vive em <code>js/dominio/</code>, <b>sem DOM</b>, para rodar na página e no Node</td></tr>
+</table>
+<pre><code>index.html ── &lt;script type="module"&gt; ──► js/app.js  (maestro: estado + eventos)
+                                          ├─► js/ui.js        desenha o DOM
+                                          ├─► js/api.js       fetch ──► servidor local · ViaCEP · BrasilAPI
+                                          ├─► js/storage.js   localStorage
+                                          └─► js/dominio/*    regras puras (classes, validações, fechamento)
+                                                  ▲
+                         scripts/fechamento-dia.js (ESM) e scripts/validar-agenda.cjs (CJS) usam o mesmo domínio</code></pre>
+
+<h2 class="section">2. Estrutura de arquivos</h2>
+<pre><code>agendapet-web/
+├── index.html
+├── package.json · package-lock.json · .gitignore   (node_modules/ no .gitignore)
+├── README.md
+├── css/style.css
+├── data/
+│   ├── servicos.json          (≥ 6 serviços)
+│   ├── agenda-exemplo.json    (≥ 8 agendamentos, usados pelos scripts de Node)
+│   └── agenda-invalida.json   (erros de propósito, para provar o validador)
+├── img/ logo.svg · favicon.svg
+├── js/
+│   ├── app.js · ui.js · api.js · storage.js
+│   └── dominio/ agendamento.js · regras.js · fechamento.js
+├── scripts/ fechamento-dia.js · validar-agenda.cjs
+├── tests/dominio.test.js      (opcional: bônus)
+├── .vscode/launch.json
+├── .github/pull_request_template.md
+├── planejamento/sprint-planning.md
+└── docs/ kanban.png · depuracao.png · bug-report.md</code></pre>
+
+<h2 class="section pagebreak">3. Responsabilidade de cada arquivo (e o que NÃO fazer)</h2>
+<table>
+  <tr><th>Arquivo</th><th>Faz</th><th>NÃO faz</th></tr>
+  <tr><td><code>index.html</code></td><td>Estrutura semântica, rótulos, ids dos campos, <code>&lt;script type="module" src="js/app.js"&gt;</code></td><td>Lógica, <code>onclick=""</code> no HTML, estilos inline</td></tr>
+  <tr><td><code>css/style.css</code></td><td>Variáveis, layout Flexbox, responsividade, estados, tema escuro</td><td><code>!important</code>, seletores de id, seletores de tag aninhados que "brigam" com classes</td></tr>
+  <tr><td><code>js/dominio/agendamento.js</code></td><td><code>CONFIG</code>, <code>STATUS</code>, classes <code>Servico</code>, <code>Agendamento</code>, subclasse domiciliar, fábrica, closure do protocolo</td><td>Tocar em <code>document</code>, <code>window</code>, <code>localStorage</code> ou <code>fetch</code></td></tr>
+  <tr><td><code>js/dominio/regras.js</code></td><td>Datas/horas, funcionamento, validação do formulário (devolve <code>{campo: mensagem}</code>), conflito, feriado, moeda</td><td>Mostrar mensagens na tela</td></tr>
+  <tr><td><code>js/dominio/fechamento.js</code></td><td>Ordenar, filtrar (callbacks), próximo atendimento, <code>calcularFechamento</code>, linhas do relatório</td><td>DOM, storage, rede</td></tr>
+  <tr><td><code>js/storage.js</code></td><td><b>Único</b> lugar que chama <code>localStorage</code>; <code>try/catch</code>; valores padrão; limpar só o prefixo</td><td>Regras de negócio</td></tr>
+  <tr><td><code>js/api.js</code></td><td><b>Único</b> lugar que chama <code>fetch</code>; <code>response.ok</code>; <code>ErroApi</code> com <code>tipo</code>; cache de feriados</td><td>Mexer no DOM</td></tr>
+  <tr><td><code>js/ui.js</code></td><td>Desenhar: <code>createElement</code>, <code>textContent</code>, <code>classList</code>; os 3 estados; toast (<code>setTimeout</code>)</td><td>Buscar dados, salvar, decidir regras</td></tr>
+  <tr><td><code>js/app.js</code></td><td>Estado, <code>addEventListener</code>, orquestra os outros módulos, <code>setInterval</code></td><td>Regra de negócio dentro dos handlers; <code>innerHTML</code> com dado do usuário</td></tr>
+  <tr><td><code>scripts/fechamento-dia.js</code></td><td>ESM: lê os JSONs com <code>fs/promises</code>, usa o domínio, imprime o relatório; <code>--data=</code> e <code>--arquivo=</code></td><td>Reescrever regra que já existe no domínio</td></tr>
+  <tr><td><code>scripts/validar-agenda.cjs</code></td><td>CommonJS: <code>require</code> de <code>fs</code>/<code>path</code>, <code>await import()</code> do domínio, lista de erros, <code>process.exit(1)</code></td><td>Usar <code>import</code> estático (não funciona em CJS)</td></tr>
+</table>
+
+<h2 class="section">4. Contratos de dados</h2>
+<h3 class="bloco">4.1 Chaves do localStorage</h3>
+<table>
+  <tr><th>Chave</th><th>Conteúdo</th><th>Quando lê / grava</th></tr>
+  <tr><td><code>agendapet:agenda</code></td><td>Lista de <b>objetos simples</b> (veja 4.3), não instâncias de classe</td><td>Lê na carga (depois do catálogo); grava a cada mudança</td></tr>
+  <tr><td><code>agendapet:filtro</code></td><td><code>"todos"</code> | <code>"Agendado"</code> | <code>"Concluído"</code> | <code>"Cancelado"</code></td><td>Lê na carga; grava ao mudar o filtro</td></tr>
+  <tr><td><code>agendapet:tema</code></td><td><code>"claro"</code> | <code>"escuro"</code></td><td>Lê na carga; grava ao trocar o tema</td></tr>
+  <tr><td><code>agendapet:feriados:2026</code></td><td><code>{ "salvoEm": 1760000000000, "feriados": [ { "date": "2026-12-25", "name": "Natal" } ] }</code> — uma chave por ano</td><td>Lê antes de chamar a BrasilAPI; vale 30 dias</td></tr>
+</table>
+<div class="atencao"><span class="titulo">Cuidado</span>O <code>localStorage</code> só guarda <b>texto</b>. Instância de classe vira <code>{}</code> no <code>JSON.stringify</code> (perde os métodos). Por isso a classe tem <code>paraJSON()</code> (gravar) e existe uma <b>fábrica</b> <code>criarAgendamento()</code> (restaurar). Na primeira visita <code>getItem</code> devolve <code>null</code>: sempre tenha um valor padrão. E o dado pode estar <b>corrompido</b>: <code>JSON.parse</code> dentro de <code>try/catch</code>.</div>
+
+<h3 class="bloco">4.2 Catálogo (data/servicos.json)</h3>
+<pre><code>[
+  { &quot;id&quot;: &quot;banho&quot;, &quot;nome&quot;: &quot;Banho&quot;, &quot;descricao&quot;: &quot;Banho com shampoo neutro, secagem e perfume.&quot;,
+    &quot;preco&quot;: 60, &quot;duracaoMin&quot;: 60, &quot;domiciliar&quot;: true },
+  { &quot;id&quot;: &quot;adestramento&quot;, &quot;nome&quot;: &quot;Adestramento (sessão)&quot;, &quot;descricao&quot;: &quot;…&quot;,
+    &quot;preco&quot;: 110, &quot;duracaoMin&quot;: 60, &quot;domiciliar&quot;: false }
+]</code></pre><h3 class="bloco">4.3 Agendamento (objeto simples: o que vai para o localStorage e para o JSON exportado)</h3><pre><code>{
+  &quot;protocolo&quot;: &quot;AP-0002&quot;, &quot;tutor&quot;: &quot;Carlos Lima&quot;, &quot;telefone&quot;: &quot;(11) 97766-5544&quot;,
+  &quot;pet&quot;: &quot;Luna&quot;, &quot;especie&quot;: &quot;Cão&quot;, &quot;servicoId&quot;: &quot;banho-tosa&quot;,
+  &quot;data&quot;: &quot;2026-10-20&quot;, &quot;hora&quot;: &quot;09:00&quot;,            // data &quot;AAAA-MM-DD&quot; e hora &quot;HH:MM&quot; (texto)
+  &quot;status&quot;: &quot;Concluído&quot;,                            // &quot;Agendado&quot; | &quot;Concluído&quot; | &quot;Cancelado&quot;
+  &quot;observacoes&quot;: &quot;Tosa na máquina.&quot;,
+  &quot;domiciliar&quot;: true,                               // false → &quot;endereco&quot;: null
+  &quot;endereco&quot;: { &quot;cep&quot;: &quot;01310-200&quot;, &quot;logradouro&quot;: &quot;Avenida Paulista&quot;, &quot;numero&quot;: &quot;1578&quot;,
+                &quot;complemento&quot;: &quot;apto 42&quot;, &quot;bairro&quot;: &quot;Bela Vista&quot;, &quot;cidade&quot;: &quot;São Paulo&quot;, &quot;uf&quot;: &quot;SP&quot; }
+}</code></pre>
+<div class="nota"><span class="titulo">Por que data e hora em texto?</span>"2026-10-20" e "09:00" ordenam e comparam corretamente como texto (<code>"09:00" &lt; "10:00"</code>). Cuidado: <code>new Date("2026-10-20")</code> é interpretado como UTC e pode virar o dia anterior no Brasil. Para montar uma data local use <code>new Date("2026-10-20T09:00:00")</code> (sem o "Z").</div>
+
+<h3 class="bloco">4.4 Objetos em memória (classes)</h3>
+<table>
+  <tr><th>Classe</th><th>Atributos</th><th>Métodos / getters</th></tr>
+  <tr><td><code>Servico</code></td><td><code>id, nome, descricao, preco, duracaoMin, domiciliar</code></td><td>—</td></tr>
+  <tr><td><code>Agendamento</code></td><td><code>protocolo, tutor, telefone, pet, especie, <b>servico</b> (objeto Servico), data, hora, status, observacoes</code></td><td><code>get ativo</code>, <code>get inicio</code>, <code>get tipo</code>, <code>calcularValor()</code>, <code>resumo()</code>, <code>conflitaCom(outro)</code>, <code>alterarStatus(novo)</code>, <code>paraJSON()</code></td></tr>
+  <tr><td><code>AgendamentoDomiciliar extends Agendamento</code></td><td>+ <code>endereco</code></td><td>sobrescreve <code>calcularValor()</code> (<code>super</code> + taxa), <code>resumo()</code>, <code>tipo</code>, <code>paraJSON()</code>; novos: <code>taxaDeslocamento()</code>, <code>enderecoCompleto()</code></td></tr>
+</table>
+<p><b>Por que herança aqui?</b> O domiciliar <i>é um</i> agendamento (mesmo tutor, pet, serviço, data, hora, status), mas tem dado a mais (endereço) e valor diferente (taxa). Só o que muda é reescrito. Você precisa saber justificar isso na apresentação ao vivo.</p>
+
+<h3 class="bloco">4.5 Estado do app (js/app.js): uma única "fonte da verdade"</h3>
+<pre><code>const estado = {
+  servicos: [],              // Servico[]
+  agenda: [],                // Agendamento[] (e AgendamentoDomiciliar)
+  dataAgenda: hojeISO(),     // dia exibido na agenda
+  filtroStatus: &#x27;todos&#x27;,
+  busca: &#x27;&#x27;,
+  expandidos: new Set(),     // protocolos com detalhes abertos
+  feriado: null,             // { date, name } se a data escolhida for feriado
+  gerarProtocolo: criarGeradorProtocolo(0),   // closure
+  timerLembretes: null,      // id do setInterval (só pode existir UM)
+  lembretesAtivos: true,
+};</code></pre>
+<h2 class="section pagebreak">5. As APIs</h2>
+<h3 class="bloco">5.1 Servidor local (catálogo)</h3>
+<p><code>GET data/servicos.json</code> → array JSON. Caminho <b>relativo</b> à página. Para simular erro, aponte para um arquivo que não existe: o servidor responde <b>404</b> e <code>response.ok</code> é <code>false</code> (o <code>fetch</code> <b>não</b> rejeita em 404!).</p>
+
+<h3 class="bloco">5.2 ViaCEP — endereço por CEP</h3>
+<table>
+  <tr><th>Item</th><th>Detalhe</th></tr>
+  <tr><td>Requisição</td><td><code>GET https://viacep.com.br/ws/{cep}/json/</code> — <code>{cep}</code> com 8 dígitos, sem hífen</td></tr>
+  <tr><td>Sucesso</td><td><code>{ "cep": "01001-000", "logradouro": "Praça da Sé", "complemento": "lado ímpar", "bairro": "Sé", "localidade": "São Paulo", "uf": "SP", … }</code></td></tr>
+  <tr><td>CEP bem formatado, mas inexistente</td><td>HTTP <b>200</b> com <code>{ "erro": true }</code> (ou <code>"erro": "true"</code>) — <b>você precisa checar</b> <code>dados.erro</code></td></tr>
+  <tr><td>CEP malformado</td><td>HTTP 400 — por isso valide os 8 dígitos <b>antes</b> de chamar</td></tr>
+  <tr><td>Mapeamento para o formulário</td><td><code>localidade → cidade</code>, <code>logradouro → rua</code>, <code>bairro</code>, <code>uf</code></td></tr>
+</table>
+
+<h3 class="bloco">5.3 BrasilAPI — feriados nacionais</h3>
+<table>
+  <tr><th>Item</th><th>Detalhe</th></tr>
+  <tr><td>Requisição</td><td><code>GET https://brasilapi.com.br/api/feriados/v1/{ano}</code></td></tr>
+  <tr><td>Resposta</td><td><code>[ { "date": "2026-12-25", "name": "Natal", "type": "national" }, … ]</code></td></tr>
+  <tr><td>Uso</td><td><code>lista.find((f) =&gt; f.date === "2026-12-25")</code> — a data do input <code>type="date"</code> já vem como <code>"AAAA-MM-DD"</code></td></tr>
+  <tr><td>Cache</td><td>Guarde <code>{ salvoEm: Date.now(), feriados }</code> em <code>agendapet:feriados:{ano}</code>; use se <code>Date.now() - salvoEm &lt; 30 dias</code></td></tr>
+</table>
+
+<h3 class="bloco">5.4 Tipos de erro (ErroApi) e como a tela reage</h3>
+<table>
+  <tr><th>tipo</th><th>Quando</th><th>Mensagem sugerida</th></tr>
+  <tr><td><code>formato</code></td><td>CEP sem 8 dígitos (nem chama a rede)</td><td>O CEP deve ter 8 dígitos.</td></tr>
+  <tr><td><code>nao-encontrado</code></td><td>ViaCEP devolveu <code>erro</code></td><td>CEP não encontrado. Preencha o endereço manualmente.</td></tr>
+  <tr><td><code>rede</code></td><td><code>fetch</code> rejeitou (sem internet)</td><td>Sem conexão… Preencha manualmente.</td></tr>
+  <tr><td><code>http</code></td><td><code>response.ok</code> falso</td><td>O serviço … está indisponível agora.</td></tr>
+</table>
+
+<h2 class="section">6. Fluxos principais</h2>
+<h3 class="bloco">6.1 Abrir a página</h3>
+<ol>
+  <li><code>iniciar()</code>: aplica o tema salvo, lê o filtro, define a data mínima do formulário, liga os eventos, inicia os lembretes.</li>
+  <li><code>carregarCatalogo()</code>: mostra <b>carregando</b> → <code>await carregarServicos()</code> → em erro mostra a mensagem com "Tentar novamente"; em sucesso renderiza os serviços e popula o <code>&lt;select&gt;</code>.</li>
+  <li>Com o catálogo pronto: <code>restaurarAgenda()</code> (objetos simples → instâncias via fábrica; item inválido é ignorado) e o gerador de protocolo recomeça do maior número salvo.</li>
+  <li><code>atualizarTela()</code>: agenda, fechamento e relógio.</li>
+</ol>
+<h3 class="bloco">6.2 Salvar um agendamento (submit)</h3>
+<ol>
+  <li><code>evento.preventDefault()</code>; limpar erros antigos; ler o formulário (<code>lerFormulario()</code>).</li>
+  <li><code>validarAgendamento(dados, servico)</code> → objeto de erros por campo. Se for feriado e não confirmou, adicionar o erro.</li>
+  <li>Sem erros: criar o agendamento pela fábrica e checar <code>temConflito(estado.agenda, novo)</code>.</li>
+  <li>Se há erro: <code>mostrarErros</code> (marca <code>aria-invalid</code>, escreve a mensagem, <b>foca o primeiro inválido</b>) e para.</li>
+  <li>Sem erros: gerar o protocolo, <code>push</code>, <code>salvarAgenda()</code>, mostrar o dia do novo item, limpar o formulário, <code>atualizarTela()</code>, toast.</li>
+</ol>
+<h3 class="bloco">6.3 Digitar o CEP (US04)</h3>
+<ol>
+  <li>No evento <code>input</code>: se já tem 8 dígitos, chama <code>consultarCep()</code>; se tem menos, limpa a mensagem.</li>
+  <li>Evita repetir a consulta do mesmo CEP (<code>ultimoCep</code>).</li>
+  <li><code>await buscarCep(cep)</code> → preenche rua, bairro, cidade e UF e leva o foco ao número. <b>Descarte a resposta</b> se, enquanto esperava, o CEP digitado mudou (corrida de requisições).</li>
+  <li>Qualquer <code>ErroApi</code> vira a mensagem do item 5.4 e o preenchimento manual continua liberado.</li>
+</ol>
+<h3 class="bloco">6.4 Escolher a data (US05)</h3>
+<ol>
+  <li>Evento <code>change</code> da data → limpa o aviso → <code>buscarFeriados(ano)</code> (cache primeiro).</li>
+  <li>Se a data está na lista: mostra o nome e o checkbox "Agendar mesmo assim". Se a API falhou: mostra o aviso de indisponibilidade (sem checkbox).</li>
+  <li>Se a pessoa trocou a data durante a espera, descarte o resultado.</li>
+</ol>
+<h3 class="bloco">6.5 Clicar na lista (delegação de eventos)</h3>
+<ol>
+  <li><b>Um</b> <code>addEventListener('click')</code> na <code>&lt;ul&gt;</code> (os itens são recriados a cada renderização!).</li>
+  <li><code>evento.target.closest('[data-acao]')</code> descobre qual botão; <code>closest('.item').dataset.protocolo</code> descobre qual item.</li>
+  <li>Um <code>switch</code> trata <code>alternar</code>, <code>concluir</code> e <code>cancelar</code>; depois salva, redesenha e <b>devolve o foco</b> ao item (senão quem usa teclado se perde).</li>
+  <li>Mouse: <code>mouseover</code>/<code>mouseout</code> também por delegação, com <code>closest('.item')</code> (eles "borbulham" dos filhos).</li>
+</ol>
+<h3 class="bloco">6.6 Relógio e lembretes (a cada 30 s)</h3>
+<ol>
+  <li><code>iniciarLembretes()</code> começa com <code>clearInterval(estado.timerLembretes)</code> (<b>nunca dois timers</b>) e então <code>setInterval(atualizarRelogio, 30_000)</code>.</li>
+  <li><code>atualizarRelogio()</code>: mostra a hora; <code>proximoAtendimento(...)</code> do dia de hoje; se faltam ≤ 15 min e os lembretes estão ativos, mostra o aviso.</li>
+  <li>Só redesenhe a lista se mudou <b>quem está atrasado</b> (redesenhar à toa a cada 30 s tira o foco de quem navega por teclado).</li>
+  <li>Pausar: <code>clearInterval</code>, guarda <code>null</code>, atualiza o botão (<code>aria-pressed</code>).</li>
+</ol>
+<h3 class="bloco">6.7 Fechar o dia pelo terminal</h3>
+<ol>
+  <li><code>node scripts/fechamento-dia.js --data=2026-10-20</code></li>
+  <li>Lê <code>servicos.json</code> e <code>agenda-exemplo.json</code> (<code>fs/promises</code>) → <code>criarAgendamento</code> para cada item → <code>calcularFechamento</code> → <code>montarLinhasRelatorio</code> → <code>console.log</code>.</li>
+  <li>Data inválida ou arquivo ruim: mensagem clara e <code>process.exitCode = 1</code>.</li>
+</ol>
+
+<h2 class="section pagebreak">7. Tratamento do "caminho triste"</h2>
+<table>
+  <tr><th>Falha</th><th>O que a pessoa vê</th><th>O que NÃO pode acontecer</th></tr>
+  <tr><td>Catálogo não carrega (404, rede)</td><td>Mensagem de erro + "Tentar novamente"; formulário e agenda seguem utilizáveis onde possível</td><td>Tela vazia, exceção não tratada no console</td></tr>
+  <tr><td>ViaCEP fora do ar / sem rede / CEP inexistente</td><td>Mensagem específica; campos de endereço continuam editáveis</td><td>Bloquear o agendamento</td></tr>
+  <tr><td>BrasilAPI fora do ar</td><td>Aviso "não foi possível verificar feriados" e o agendamento prossegue</td><td>Exigir confirmação de um feriado que não conhecemos</td></tr>
+  <tr><td><code>localStorage</code> corrompido ou vazio</td><td>Página abre com agenda vazia e valores padrão</td><td><code>JSON.parse</code> lançando erro; <code>null.map</code></td></tr>
+  <tr><td>Item inválido dentro da agenda salva (ex.: serviço que não existe mais)</td><td>O item é ignorado; o resto carrega</td><td>Toda a agenda sumir por causa de um item</td></tr>
+  <tr><td>Resposta da API chega depois que a pessoa mudou o CEP/data</td><td>Resposta atrasada é descartada</td><td>Endereço/feriado de um valor antigo aparecendo na tela</td></tr>
+  <tr><td>Vários cliques em "Concluir"</td><td>Botões desabilitados após o primeiro</td><td>Alterar duas vezes o mesmo agendamento</td></tr>
+  <tr><td>Script de Node com arquivo inexistente ou JSON inválido</td><td>Mensagem clara no terminal e código de saída 1</td><td>Stack trace gigante sem explicação</td></tr>
+</table>
+
+<h2 class="section">8. Modelos de código (esqueletos para completar)</h2>
+<p>Não copie sem entender: cada bloco traz <code>TODO</code> e uma dica. As regras (preço, taxa, funcionamento…) <b>você decide</b> e registra no README.</p>
+<h3 class="bloco">8.1 package.json (US11)</h3><pre><code>{
+  &quot;name&quot;: &quot;agendapet-web&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;TODO: uma frase sobre o projeto&quot;,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;http-server . -p 5500 -c-1 -o&quot;,
+    &quot;fechamento&quot;: &quot;node scripts/fechamento-dia.js --data=2026-10-20&quot;,
+    &quot;validar&quot;: &quot;node scripts/validar-agenda.cjs&quot;
+  }
+}
+// Depois, no terminal:  npm install --save-dev http-server   (cria devDependencies + package-lock.json)</code></pre><h3 class="bloco">8.2 Classes, herança, this e closure (US07) — js/dominio/agendamento.js</h3><pre><code>export const CONFIG = Object.freeze({ abertura: &#x27;08:00&#x27;, fechamento: &#x27;18:00&#x27;, passoMin: 30 /* TODO: taxas, cidade da loja… */ });
+
+export class Agendamento {
+  constructor({ protocolo, tutor, /* TODO: demais campos */ servico, data, hora, status = &#x27;Agendado&#x27; }) {
+    this.protocolo = protocolo;
+    // TODO: guardar os demais campos em this.*
+  }
+
+  get ativo() { /* TODO: true quando o status NÃO é &quot;Cancelado&quot; */ }
+
+  calcularValor() { return this.servico.preco; }
+
+  conflitaCom(outro) {
+    // TODO: true se os DOIS estão ativos, são de datas/horas iguais e NÃO são o mesmo objeto (this !== outro)
+  }
+
+  paraJSON() { /* TODO: objeto simples; em vez de this.servico, guarde servicoId: this.servico.id */ }
+}
+
+export class AgendamentoDomiciliar extends Agendamento {
+  constructor({ endereco, ...dados }) {
+    super(dados);              // 1) chama o construtor da classe-mãe  2) só depois use this
+    this.endereco = endereco;
+  }
+  calcularValor() { return super.calcularValor() + this.taxaDeslocamento(); }
+  taxaDeslocamento() { /* TODO: regra da taxa (compare cidades ignorando acentos/maiúsculas) */ }
+}
+
+// Fábrica: decide a classe a partir do objeto simples (necessária para restaurar do localStorage)
+export function criarAgendamento(dados, catalogo) { /* TODO: achar o serviço pelo id; domiciliar ? new AgendamentoDomiciliar(...) : new Agendamento(...) */ }
+
+// CLOSURE: `contador` fica &quot;presa&quot; na função devolvida (sem variável global)
+export function criarGeradorProtocolo(ultimo = 0) {
+  let contador = ultimo;
+  return function proximoProtocolo() {
+    /* TODO: somar 1 e devolver &quot;AP-0001&quot; (dica: String(n).padStart(4, &#x27;0&#x27;)) */
+  };
+}</code></pre><h3 class="bloco">8.3 Callback e métodos de array (US06/US07) — js/dominio/fechamento.js</h3><pre><code>// CALLBACK: recebe FUNÇÕES (critérios). `every` exige que o item passe em TODOS.
+export function filtrarAgendamentos(lista, ...criterios) {
+  // TODO: return lista.filter(item =&gt; criterios.every(criterio =&gt; criterio(item)));
+}
+// Fábrica de critérios: devolve uma função pronta para usar como callback
+export const porStatus = (status) =&gt; (agendamento) =&gt; { /* TODO: &#x27;todos&#x27; passa; senão compare o status */ };
+
+export function calcularFechamento(lista, data) {
+  const doDia = lista.filter((a) =&gt; a.data === data);
+  const concluidos = /* TODO: filter por status &#x27;Concluído&#x27; */ [];
+  // reduce: soma o valor SÓ dos concluídos  →  faturamento
+  // reduce: agrupa por serviço { id: { servico, quantidade, faturado } }  →  Object.values(...).sort(...)
+  // every: o dia está encerrado se existe atendimento e NENHUM está &#x27;Agendado&#x27;
+  // some: existe atendimento domiciliar?
+  // find: (em proximoAtendimento) primeiro &#x27;Agendado&#x27; a partir da hora atual
+  return { /* TODO */ };
+}</code></pre><h3 class="bloco">8.4 fetch com os 3 estados e erros por tipo (US02, US04) — js/api.js</h3><pre><code>export class ErroApi extends Error {
+  constructor(tipo, mensagem) { super(mensagem); this.tipo = tipo; }   // &#x27;rede&#x27; | &#x27;http&#x27; | &#x27;formato&#x27; | &#x27;nao-encontrado&#x27;
+}
+
+async function buscarJSON(url) {
+  let resposta;
+  try {
+    resposta = await fetch(url);                       // só REJEITA se a requisição nem chegou ao servidor
+  } catch {
+    throw new ErroApi(&#x27;rede&#x27;, &#x27;Sem conexão.&#x27;);
+  }
+  if (!resposta.ok) throw new ErroApi(&#x27;http&#x27;, `Erro HTTP ${resposta.status}`);   // 404, 500… NÃO rejeitam o fetch
+  return resposta.json();                              // também é uma Promise: use await
+}
+
+// ViaCEP: depois de buscarJSON, confira  if (dados.erro)  → ErroApi(&#x27;nao-encontrado&#x27;)   (HTTP 200 com { &quot;erro&quot;: true })</code></pre><pre><code>// app.js — os 3 estados
+async function carregarCatalogo() {
+  ui.mostrarEstado(aviso, &#x27;carregando&#x27;, &#x27;Carregando serviços…&#x27;);
+  try {
+    const dados = await carregarServicos();
+    /* TODO: guardar em estado.servicos (new Servico) e renderizar */
+  } catch (erro) {
+    ui.mostrarEstado(aviso, &#x27;erro&#x27;, erro.message, carregarCatalogo);   // 3º argumento: botão &quot;Tentar novamente&quot;
+    return;
+  }
+  ui.esconderEstado(aviso);
+}</code></pre><h3 class="bloco">8.5 localStorage seguro (US08) — js/storage.js</h3><pre><code>const PREFIXO = &#x27;agendapet:&#x27;;
+
+export function lerJSON(chave, padrao) {
+  try {
+    const bruto = localStorage.getItem(chave);        // null na 1ª visita
+    return bruto === null ? padrao : JSON.parse(bruto);
+  } catch {
+    return padrao;                                    // JSON corrompido não derruba a página
+  }
+}
+export function salvarJSON(chave, valor) { /* TODO: try { setItem(chave, JSON.stringify(valor)); return true } catch { return false } */ }
+
+export function limparDados() {
+  // TODO: pegar Object.keys(localStorage), filtrar as que começam com PREFIXO e remover só essas
+}</code></pre><h3 class="bloco">8.6 Delegação de eventos e atalhos de teclado (US06) — js/app.js</h3><pre><code>$(&#x27;lista-agenda&#x27;).addEventListener(&#x27;click&#x27;, (evento) =&gt; {
+  const botao = evento.target.closest(&#x27;[data-acao]&#x27;);          // qual botão?
+  if (!botao) return;
+  const protocolo = botao.closest(&#x27;.item&#x27;).dataset.protocolo;  // qual item?
+  switch (botao.dataset.acao) {
+    case &#x27;concluir&#x27;: /* TODO */ break;
+    case &#x27;cancelar&#x27;: /* TODO */ break;
+    case &#x27;alternar&#x27;: /* TODO: abrir/fechar detalhes (aria-expanded) */ break;
+  }
+});
+
+document.addEventListener(&#x27;keydown&#x27;, (evento) =&gt; {
+  if (evento.key === &#x27;Escape&#x27; &amp;&amp; evento.target.id === &#x27;busca&#x27;) { /* TODO: limpar a busca */ return; }
+  if (evento.target.matches(&#x27;input, textarea, select&#x27;)) return;   // não roube as teclas de quem está digitando!
+  if (evento.key === &#x27;/&#x27;) { evento.preventDefault(); /* TODO: focar a busca */ }
+  if (evento.key.toLowerCase() === &#x27;n&#x27;) { /* TODO: ir ao formulário e focar o campo tutor */ }
+});</code></pre><h3 class="bloco">8.7 Timers (US09)</h3><pre><code>// setInterval: sempre guarde o id e limpe antes de criar outro
+function iniciarLembretes() {
+  clearInterval(estado.timerLembretes);
+  estado.timerLembretes = setInterval(atualizarRelogio, 30_000);
+  atualizarRelogio();                       // já mostra algo agora, sem esperar 30 s
+}
+
+// setTimeout: um toast por vez; um novo cancela o timer do anterior (senão o toast novo some cedo demais)
+let timerToast = null;
+export function mostrarToast(texto, tipo = &#x27;sucesso&#x27;, duracaoMs = 4000) {
+  clearTimeout(timerToast);
+  // TODO: preencher #toast com textContent, mostrar (hidden = false)
+  timerToast = setTimeout(() =&gt; { /* TODO: esconder */ }, duracaoMs);
+}</code></pre><h3 class="bloco">8.8 Script ESM de terminal (US11) — scripts/fechamento-dia.js</h3><pre><code>import { readFile } from &#x27;node:fs/promises&#x27;;
+import path from &#x27;node:path&#x27;;
+import { fileURLToPath } from &#x27;node:url&#x27;;
+import { Servico, criarAgendamento } from &#x27;../js/dominio/agendamento.js&#x27;;   // MESMOS módulos da página
+// import { calcularFechamento, montarLinhasRelatorio } from &#x27;../js/dominio/fechamento.js&#x27;;
+
+// ESM não tem __dirname: calcule a partir de import.meta.url
+const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), &#x27;..&#x27;);
+const lerJSON = async (rel) =&gt; JSON.parse(await readFile(path.join(raiz, rel), &#x27;utf8&#x27;));
+
+// Argumentos:  node scripts/fechamento-dia.js --data=2026-10-20
+const arg = process.argv.find((a) =&gt; a.startsWith(&#x27;--data=&#x27;));
+// TODO: validar a data; carregar catálogo e agenda; calcular; imprimir; em erro → console.error + process.exitCode = 1</code></pre><h3 class="bloco">8.9 Script CommonJS com import() dinâmico (US11) — scripts/validar-agenda.cjs</h3><pre><code>&#x27;use strict&#x27;;
+const fs = require(&#x27;node:fs&#x27;);          // CommonJS: require()
+const path = require(&#x27;node:path&#x27;);      // e __dirname existe aqui
+const raiz = path.resolve(__dirname, &#x27;..&#x27;);
+
+async function main() {
+  const agenda = JSON.parse(fs.readFileSync(path.resolve(raiz, process.argv[2] || &#x27;data/agenda-exemplo.json&#x27;), &#x27;utf8&#x27;));
+
+  // Importar ESM a partir de CJS: SÓ com import() dinâmico (devolve Promise → await)
+  const regras = await import(&#x27;../js/dominio/regras.js&#x27;);
+
+  const erros = [];
+  // TODO: para cada item → campos obrigatórios, status válido, regras.dataValida / horaValida, serviço existente,
+  //       horário dentro do funcionamento, endereço se domiciliar; depois conflitos de horário (laço duplo).
+  if (erros.length) {
+    console.error(`[ERRO] ${erros.length} problema(s):`);
+    erros.forEach((e) =&gt; console.error(&#x27;  - &#x27; + e));
+    process.exit(1);                    // código de saída ≠ 0 = falha (automações enxergam isso)
+  }
+  console.log(&#x27;[OK] agenda válida&#x27;);
+}
+main();</code></pre><h3 class="bloco">8.10 .vscode/launch.json (US12)</h3><pre><code>{
+  &quot;version&quot;: &quot;0.2.0&quot;,
+  &quot;configurations&quot;: [
+    {
+      &quot;name&quot;: &quot;Depurar fechamento do dia (Node)&quot;,
+      &quot;type&quot;: &quot;node&quot;,
+      &quot;request&quot;: &quot;launch&quot;,
+      &quot;program&quot;: &quot;${workspaceFolder}/scripts/fechamento-dia.js&quot;,
+      &quot;args&quot;: [&quot;--data=2026-10-20&quot;],
+      &quot;console&quot;: &quot;integratedTerminal&quot;,
+      &quot;skipFiles&quot;: [&quot;&lt;node_internals&gt;/**&quot;]
+    }
+    // TODO: uma configuração para o validar-agenda.cjs (args: [&quot;data/agenda-invalida.json&quot;])
+  ]
+}</code></pre><h3 class="bloco">8.11 Teste com o executor nativo (bônus) — tests/dominio.test.js</h3><pre><code>import test from &#x27;node:test&#x27;;
+import assert from &#x27;node:assert/strict&#x27;;
+import { criarGeradorProtocolo } from &#x27;../js/dominio/agendamento.js&#x27;;
+
+test(&#x27;closure: o protocolo é sequencial&#x27;, () =&gt; {
+  const proximo = criarGeradorProtocolo(7);
+  assert.equal(proximo(), &#x27;AP-0008&#x27;);
+  assert.equal(proximo(), &#x27;AP-0009&#x27;);
+});
+// Rode:  npm test   →  &quot;test&quot;: &quot;node --test tests/&quot;</code></pre><h3 class="bloco">8.12 Padrões de branch, commit e Pull Request</h3><pre><code>Branch:  feat/US03-formulario        fix/US07-faturamento-concluidos      chore/setup-projeto      docs/readme
+Commit:  feat(US03): adiciona validação de data e horário
+         fix(US07): soma só atendimentos concluídos no faturamento
+         docs: descreve a regra da taxa domiciliar
+         (tipo(ticket): descrição no imperativo — feat, fix, docs, refactor, test, chore)
+Pull Request: preencha o modelo de .github/pull_request_template.md (o que mudou, ticket, como testar, evidência, checklist)</code></pre>
+<h2 class="section pagebreak">9. Node.js na prática: npm, global vs local, ESM vs CommonJS</h2>
+<table>
+  <tr><th>Quero…</th><th>Comando</th></tr>
+  <tr><td>Criar o projeto</td><td><code>npm init -y</code> (depois edite nome, descrição, <code>"type": "module"</code> e scripts)</td></tr>
+  <tr><td>Instalar uma ferramenta <b>local</b> (dev)</td><td><code>npm install --save-dev http-server</code> → vai para <code>devDependencies</code> e <code>package-lock.json</code></td></tr>
+  <tr><td>Instalar tudo do projeto (após clonar)</td><td><code>npm install</code></td></tr>
+  <tr><td>Ver o que está instalado</td><td><code>npm ls</code> (local) · <code>npm ls -g --depth=0</code> (global)</td></tr>
+  <tr><td>Instalar <b>global</b> (só para entender)</td><td><code>npm install -g http-server</code> — fica na máquina, <b>não</b> entra no projeto</td></tr>
+  <tr><td>Rodar um pacote sem instalar</td><td><code>npx http-server --help</code></td></tr>
+  <tr><td>Rodar um script do <code>package.json</code></td><td><code>npm run fechamento</code> (<code>start</code> e <code>test</code> dispensam o <code>run</code>)</td></tr>
+</table>
+<table>
+  <tr><th></th><th>CommonJS</th><th>ESM</th></tr>
+  <tr><td>Importar / exportar</td><td><code>const x = require('./x')</code> · <code>module.exports = …</code></td><td><code>import x from './x.js'</code> · <code>export function …</code> (a extensão <code>.js</code> é obrigatória no import)</td></tr>
+  <tr><td>Como o Node decide</td><td><code>.cjs</code>, ou <code>.js</code> sem <code>"type": "module"</code></td><td><code>.mjs</code>, ou <code>.js</code> com <code>"type": "module"</code></td></tr>
+  <tr><td><code>__dirname</code></td><td>Existe</td><td>Não existe: <code>fileURLToPath(import.meta.url)</code></td></tr>
+  <tr><td>Navegador</td><td>Não entende</td><td>Entende (<code>&lt;script type="module"&gt;</code>)</td></tr>
+  <tr><td>Um carrega o outro</td><td>CJS → ESM só com <code>await import()</code></td><td>ESM → CJS com <code>import</code> normal</td></tr>
+</table>
+<div class="dica"><span class="titulo">Por que ESM é o padrão deste projeto</span>É o único formato que roda <b>nos dois lugares</b>: o navegador e o Node. Assim <code>js/dominio/</code> é escrito uma vez. O CommonJS entra só no validador, para você enxergar e explicar a diferença.</div>
+
+<h2 class="section">10. Depuração no VS Code (US12)</h2>
+<ol>
+  <li>Abra <code>js/dominio/fechamento.js</code> e clique na margem esquerda da linha desejada: aparece o <b>ponto vermelho</b> (breakpoint).</li>
+  <li>Pressione <b>F5</b> e escolha a configuração do <code>launch.json</code>. A execução <b>pausa</b> na linha.</li>
+  <li>Painel <b>Variables</b>: valores no momento. Painel <b>Watch</b>: adicione expressões (ex.: <code>concluidos.length</code>). <b>Call Stack</b>: quem chamou quem.</li>
+  <li><b>F10</b> (Step Over) executa a linha; <b>F11</b> (Step Into) entra na função; <b>Shift+F11</b> sai; <b>F5</b> continua.</li>
+  <li>Clique direito no breakpoint → <b>Editar</b> → <b>Condição</b> (ex.: <code>a.status === 'Agendado'</code>) ou <b>Logpoint</b> (escreve no Debug Console sem parar).</li>
+  <li>Documente em <code>docs/bug-report.md</code>: título, passos, esperado × obtido, causa raiz, evidência (print em <code>docs/depuracao.png</code>) e correção (commit/PR).</li>
+</ol>
+<div class="nota"><span class="titulo">Sobre o bug</span>Use um bug <b>real</b> que apareceu no seu desenvolvimento. Se nenhum surgir, crie uma branch, introduza um erro controlado (por exemplo, o faturamento somar atendimentos cancelados ou agendados), reproduza, depure, corrija e documente. O que importa é mostrar o <b>método</b>: reproduzir → hipótese → evidência no depurador → causa raiz → correção.</div>
+
+<h2 class="section pagebreak">11. CSS: Flexbox, mobile-first e especificidade</h2>
+<table>
+  <tr><th>Tema</th><th>Orientação</th></tr>
+  <tr><td>Mobile-first</td><td>Escreva primeiro o CSS do celular (uma coluna). Use <code>@media (min-width: 640px)</code> e <code>(min-width: 1024px)</code> para <b>acrescentar</b> ao layout maior</td></tr>
+  <tr><td>Flexbox</td><td>Coluna no celular (<code>flex-direction: column</code>); em ≥ 1024 px o painel vira <code>row</code> com duas colunas (<code>flex: 1 1 380px</code> e <code>flex: 2 1 560px</code>); <code>flex-wrap</code> nas linhas de campos; <code>min-width: 0</code> nas colunas para o conteúdo não estourar</td></tr>
+  <tr><td>Variáveis</td><td>Cores e medidas em <code>:root</code>; tema escuro em <code>:root[data-tema="escuro"]</code> redefinindo só as variáveis</td></tr>
+  <tr><td>Especificidade</td><td>Classes simples (0,1,0). Seletor de tag + classe (<code>.agenda button</code> = 0,1,1) <b>vence</b> uma classe sozinha e causa "o estilo não pega". Dê uma classe própria ao elemento. Sem <code>!important</code> e sem <code>#id</code> no CSS</td></tr>
+  <tr><td><code>hidden</code></td><td><code>[hidden]</code> perde para <code>display: flex</code> de uma classe (mesma especificidade, vale a ordem). Declare <code>[hidden] { display: none; }</code> <b>por último</b> no arquivo</td></tr>
+  <tr><td>Foco</td><td><code>:focus-visible</code> com contorno de 3 px e <code>outline-offset</code>. Nunca <code>outline: none</code> sem substituto</td></tr>
+  <tr><td>Toque</td><td>Botões e campos com <code>min-height: 44px</code>. O toast deve ter <code>pointer-events: none</code> (senão cobre botões embaixo)</td></tr>
+</table>
+
+<h2 class="section">12. Passo a passo sugerido (um ticket por branch)</h2>
+<table>
+  <tr><th>Quando</th><th>Branch</th><th>O que fazer</th><th>Commits de exemplo</th></tr>
+  <tr><td>16/10</td><td><code>chore/setup-projeto</code></td><td>Repositório, Kanban (12 cartões), estimar e escrever <code>sprint-planning.md</code>; <code>npm init</code>, <code>.gitignore</code>, modelo de PR</td><td><code>chore: inicia projeto e estrutura de pastas</code><br><code>docs: adiciona planejamento da sprint</code></td></tr>
+  <tr><td>20/10</td><td><code>feat/US01-US10-html-css</code></td><td>HTML semântico com todos os ids; CSS mobile-first com variáveis, Flexbox, foco, tema</td><td><code>feat(US01): cria estrutura semântica da página</code><br><code>feat(US10): aplica layout responsivo com Flexbox</code></td></tr>
+  <tr><td>20–22/10</td><td><code>feat/US02-US03-catalogo-formulario</code></td><td><code>servicos.json</code> + <code>api.js</code> (3 estados); <code>regras.js</code> (validação); submit com erros acessíveis</td><td><code>feat(US02): carrega catálogo com fetch e 3 estados</code><br><code>feat(US03): valida formulário e mostra erros na tela</code></td></tr>
+  <tr><td>22/10</td><td><code>feat/US04-US05-apis</code></td><td>ViaCEP e BrasilAPI com erros por tipo, resposta atrasada descartada e cache de feriados</td><td><code>feat(US04): preenche endereço pelo CEP</code><br><code>feat(US05): alerta feriados com cache</code></td></tr>
+  <tr><td>23/10</td><td><code>feat/US06-US07-agenda-dominio</code></td><td>Classes, herança, conflito, protocolo (closure), callbacks, fechamento; lista, busca, filtros, atalhos. <b>Teste o domínio no Node antes de ligar na tela</b></td><td><code>feat(US07): cria classes com herança e fechamento do dia</code><br><code>feat(US06): lista agenda com busca e atalhos</code></td></tr>
+  <tr><td>27/10</td><td><code>feat/US08-US09-storage-timers</code></td><td><code>storage.js</code>, exportação, limpar dados; relógio, lembretes, toast</td><td><code>feat(US08): persiste agenda no localStorage</code><br><code>feat(US09): adiciona lembretes com setInterval</code></td></tr>
+  <tr><td>29/10</td><td><code>feat/US11-node-modulos</code> · <code>fix/…</code></td><td>Scripts npm, devDependency local, <code>fechamento-dia.js</code>, <code>validar-agenda.cjs</code>, <code>launch.json</code>; depurar e documentar o bug</td><td><code>feat(US11): adiciona scripts de terminal ESM e CommonJS</code><br><code>fix(US07): …</code> · <code>docs: registra bug-report</code></td></tr>
+  <tr><td>30/10</td><td><code>docs/readme-retrospectiva</code></td><td>README completo (decisões, global vs local, CJS vs ESM, especificidade, retrospectiva), prints, Lighthouse, revisão do que veio de IA, ensaio da apresentação em live coding</td><td><code>docs: conclui README e retrospectiva</code></td></tr>
+</table>
+
+<h2 class="section pagebreak">13. Plano de testes (cenários para você conferir)</h2>
+<table>
+  <tr><th>#</th><th>Cenário</th><th>Esperado</th></tr>
+  <tr><td>T01</td><td>Abrir a página pelo <code>npm start</code></td><td>7 serviços; nenhum erro vermelho no console</td></tr>
+  <tr><td>T02</td><td>Apontar o <code>fetch</code> do catálogo para um arquivo inexistente</td><td>Mensagem de erro + "Tentar novamente"</td></tr>
+  <tr><td>T03</td><td>Enviar o formulário vazio</td><td>Erros por campo na tela; foco no primeiro; nenhum <code>alert</code></td></tr>
+  <tr><td>T04</td><td>Data de ontem · horário 07:00 · banho e tosa às 17:00 · horário 09:15</td><td>Cada um é rejeitado com mensagem clara (RN01)</td></tr>
+  <tr><td>T05</td><td>Salvar um agendamento válido</td><td>Aparece na agenda do dia; protocolo AP-0001; toast; formulário limpo; página não recarrega</td></tr>
+  <tr><td>T06</td><td>Domiciliar com CEP 01001-000</td><td>Rua "Praça da Sé", cidade São Paulo/SP; valor = preço + taxa</td></tr>
+  <tr><td>T07</td><td>CEP 99999-999 · CEP "123" · modo avião (DevTools → Network → Offline)</td><td>Três mensagens diferentes; preenchimento manual possível</td></tr>
+  <tr><td>T08</td><td>Serviço "Adestramento" + domiciliar</td><td>Caixa desabilitada com explicação</td></tr>
+  <tr><td>T09</td><td>Data 25/12 → depois 02/11</td><td>Aviso com o nome do feriado; salvar exige confirmação; <b>2ª consulta sem nova requisição</b> (aba Network)</td></tr>
+  <tr><td>T10</td><td>Escolher data de um ano ainda não consultado com a rede desligada</td><td>Aviso de indisponibilidade; consegue agendar</td></tr>
+  <tr><td>T11</td><td>Dois agendamentos no mesmo dia e hora · cancelar o primeiro · tentar de novo</td><td>1º conflito bloqueado; depois do cancelamento, aceito</td></tr>
+  <tr><td>T12</td><td>Buscar "sonia" (com "Sônia" salva) · filtrar por Cancelado · <kbd>Esc</kbd></td><td>Busca ignora acento; filtro funciona; <kbd>Esc</kbd> limpa</td></tr>
+  <tr><td>T13</td><td>Teclas <kbd>/</kbd> e <kbd>N</kbd> fora e dentro de campos</td><td>Atalhos só funcionam fora dos campos</td></tr>
+  <tr><td>T14</td><td>Concluir um agendado</td><td>Status muda; botões desabilitados; fechamento atualiza; foco permanece no item</td></tr>
+  <tr><td>T15</td><td>F5 (recarregar)</td><td>Agenda, filtro e tema restaurados</td></tr>
+  <tr><td>T16</td><td>Console: <code>localStorage.setItem('agendapet:agenda', '{{ quebrado')</code> e F5</td><td>Página abre normalmente com agenda vazia</td></tr>
+  <tr><td>T17</td><td>Criar um agendamento para daqui a ~10 min · outro para 30 min atrás</td><td>Lembrete visível; o antigo marcado "Atrasado"</td></tr>
+  <tr><td>T18</td><td>Pausar e retomar lembretes várias vezes</td><td>Sem timers duplicados; botão e <code>aria-pressed</code> coerentes</td></tr>
+  <tr><td>T19</td><td>Trocar o tema e recarregar</td><td>Tema persiste; contraste ok nos dois</td></tr>
+  <tr><td>T20</td><td>"Limpar meus dados" (2 cliques)</td><td>1º clique pede confirmação; só chaves <code>agendapet:*</code> removidas</td></tr>
+  <tr><td>T21</td><td>Largura de 360, 768 e 1280 px</td><td>Sem rolagem horizontal; layout muda; botões fáceis de tocar</td></tr>
+  <tr><td>T22</td><td>Usar a página só com o teclado</td><td>Tudo alcançável; foco sempre visível</td></tr>
+  <tr><td>T23</td><td>Lighthouse (Acessibilidade e SEO)</td><td>≥ 90, ou pontos abaixo justificados no README</td></tr>
+  <tr><td>T24</td><td><code>npm run fechamento</code> · <code>npm run validar</code> · <code>npm run validar:erro</code> · <code>echo $?</code></td><td>Relatório correto; código 0; erros listados e código 1</td></tr>
+  <tr><td>T25</td><td>Clone limpo em outra pasta: <code>npm install</code> e <code>npm start</code></td><td>Funciona sem nada além do README</td></tr>
+</table>
+
+<h2 class="section">14. Armadilhas frequentes (e dicas para revisar código de IA)</h2>
+<table>
+  <tr><th>Armadilha</th><th>Como evitar</th></tr>
+  <tr><td><code>fetch</code> não rejeita em 404/500</td><td>Sempre confira <code>resposta.ok</code> antes de <code>.json()</code></td></tr>
+  <tr><td>ViaCEP responde 200 para CEP inexistente</td><td>Confira <code>dados.erro</code></td></tr>
+  <tr><td>Esquecer <code>await</code> em <code>resposta.json()</code></td><td>Ele também é Promise</td></tr>
+  <tr><td>Abrir o HTML com duplo clique</td><td>Módulos e <code>fetch</code> exigem servidor: <code>npm start</code></td></tr>
+  <tr><td>Esquecer <code>preventDefault()</code> no submit</td><td>A página recarrega e tudo some</td></tr>
+  <tr><td><code>novalidate</code> ausente com validação própria</td><td>O navegador mostra os balões dele antes das suas mensagens</td></tr>
+  <tr><td><code>innerHTML</code> com texto do usuário</td><td>Use <code>textContent</code> (evita injeção de HTML/script)</td></tr>
+  <tr><td>Listener preso a elementos que são recriados</td><td>Delegação: um listener na lista + <code>closest()</code></td></tr>
+  <tr><td><code>setInterval</code> duplicado</td><td>Guarde o id; <code>clearInterval</code> antes de criar outro</td></tr>
+  <tr><td>Instância de classe no <code>localStorage</code></td><td>Grave <code>paraJSON()</code>; restaure com a fábrica</td></tr>
+  <tr><td><code>JSON.parse(null)</code> na 1ª visita / dado corrompido</td><td>Valor padrão + <code>try/catch</code></td></tr>
+  <tr><td><code>new Date("2026-10-20")</code> vira o dia anterior (UTC)</td><td>Use <code>"2026-10-20T09:00:00"</code> ou trabalhe com texto</td></tr>
+  <tr><td>Esquecer <code>super(...)</code> antes de usar <code>this</code></td><td>Em subclasses, <code>super()</code> é a 1ª linha do construtor</td></tr>
+  <tr><td><code>this</code> perdido em callback</td><td>Use arrow function ou métodos que não dependem de <code>this</code> externo</td></tr>
+  <tr><td>Limpar <b>todo</b> o <code>localStorage</code></td><td>Apague só as chaves com o seu prefixo</td></tr>
+  <tr><td>Resposta atrasada sobrescrevendo dado novo</td><td>Compare o valor atual do campo com o da consulta antes de usar a resposta</td></tr>
+  <tr><td><code>__dirname</code> em ESM / <code>import</code> estático em <code>.cjs</code></td><td><code>import.meta.url</code> no ESM; <code>await import()</code> no CJS</td></tr>
+  <tr><td>Estilo que "não pega"</td><td>Veja a especificidade no DevTools; troque seletor de tag por classe; nada de <code>!important</code></td></tr>
+</table>
+<div class="atencao"><span class="titulo">Como revisar código de IA</span>(1) Rode e quebre de propósito (rede offline, campo vazio, storage corrompido). (2) Confira se usa só o que o curso ensinou ou se você sabe explicar cada linha. (3) Procure <code>var</code>, <code>innerHTML</code>, <code>!important</code>, bibliotecas e <code>alert</code>. (4) Confirme que a regra de negócio ficou em <code>js/dominio/</code>. (5) Anote para a apresentação o que a IA errou e como você corrigiu.</div>
+
+<h2 class="checklist-final pagebreak">15. Checklist final de entrega</h2>
+<ul class="checklist">
+  <li>Repositório <b>público</b>; <code>npm install</code> + <code>npm start</code> funcionam em um <b>clone limpo</b></li>
+  <li>Estrutura de pastas conforme a seção 2; <code>node_modules/</code> fora do repositório; <code>package-lock.json</code> versionado</li>
+  <li>US01 a US12 atendem aos cenários de aceite do Documento Funcional</li>
+  <li>Página semântica, um <code>h1</code>, foco visível, 360/768/1280 px sem rolagem horizontal, <b>sem <code>!important</code> e sem seletores de id</b></li>
+  <li><code>fetch</code> com 3 estados e erros distintos; falha de API nunca bloqueia o trabalho</li>
+  <li>Classes, herança (<code>extends</code>/<code>super</code>), <code>this</code>, closure, callback e ≥ 4 métodos de array; ao menos um laço</li>
+  <li><code>localStorage</code> com <code>try/catch</code>; limpar só o prefixo; timers com <code>clearInterval</code>/<code>clearTimeout</code></li>
+  <li>ESM (<code>export</code>/<code>import</code>) e um script CommonJS (<code>.cjs</code>); <code>npm run fechamento</code> e <code>npm run validar</code> funcionam</li>
+  <li><code>.vscode/launch.json</code> funcional; <code>docs/bug-report.md</code> completo + <code>docs/depuracao.png</code></li>
+  <li>Kanban com 4 colunas e 12 cartões estimados, com branch e PR em cada um; <code>planejamento/sprint-planning.md</code></li>
+  <li>≥ 5 branches <code>tipo/US##</code>, ≥ 12 commits no padrão e ≥ 5 Pull Requests com o modelo preenchido</li>
+  <li>README completo (decisões de negócio, global vs local, CJS vs ESM, especificidade, depuração, sprint e retrospectiva)</li>
+  <li>Apresentação em live coding no Google Meet (sexta 30/10, 15 minutos por estudante, turma reunida), com IA declarada; links do repositório GitHub e do Kanban enviados no AVA até <b>02/11/2026, 22h</b>, com o código publicado no GitHub</li>
+</ul>
+
+<footer>Refinamento Técnico — AgendaPet Web · Desenvolvimento Front-End [React] T4 · Módulo 1 · Semanas 13 e 14</footer>
+</div>
+</body>
+</html>

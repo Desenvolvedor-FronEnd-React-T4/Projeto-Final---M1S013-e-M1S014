@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documento Funcional — AgendaPet Web (Patinhas &amp; Cia)</title>
+<style>
+  :root{
+    --navy:#1b4f72; --navy-dark:#123049; --zebra:#eef4f8;
+    --note-bg:#eaf2f8; --warn-bg:#fff3cd; --code-bg:#1e1e1e;
+    --verde:#2e7d32; --verde-dark:#1b5e20;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#263238;line-height:1.55;font-size:13.5px}
+  .wrap{max-width:980px;margin:auto;padding:28px 34px}
+  h1{color:var(--navy);text-align:center;font-size:27px;margin-bottom:4px}
+  h1 + .subtitle{text-align:center;color:#37474f;font-size:15.5px;font-weight:bold;margin-top:0;margin-bottom:18px}
+  .meta{font-size:12.5px;color:#455a64;border-bottom:1px solid #cfd8dc;padding-bottom:16px;margin-bottom:16px}
+  .meta b{color:#263238}
+  h2.encontro,h2.section,h2.conexao,h2.aula{background:var(--navy);color:#fff;padding:10px 16px;border-radius:4px;font-size:17px;margin-top:34px;margin-bottom:14px;letter-spacing:.2px}
+  h3.bloco{color:var(--navy-dark);border-bottom:2px solid var(--navy);padding-bottom:4px;font-size:15px;margin-top:26px}
+  h3.dia{background:var(--navy-dark);color:#fff;padding:8px 14px;border-radius:4px;font-size:14.5px;margin-top:22px;margin-bottom:10px}
+  h3.questao{color:var(--navy-dark);font-size:14px;margin-top:22px;margin-bottom:2px}
+  .tempo{color:#607d8b;font-weight:normal;font-size:12.5px}
+  .enunciado{font-weight:bold;margin:4px 0 8px}
+  .obj-encontro,.objetivo-encontro{background:var(--zebra);border-left:4px solid var(--navy);padding:10px 14px;margin:14px 0 20px;font-size:13px}
+  .fala{background:var(--zebra);border-radius:5px;padding:10px 14px;margin:10px 0}
+  .fala b.label{color:var(--navy);display:block;margin-bottom:3px}
+  pre{background:var(--code-bg);color:#f8f8f2;padding:12px 14px;border-radius:6px;overflow:auto;font-size:11.8px;line-height:1.5;margin:10px 0;white-space:pre-wrap}
+  code{font-family:Consolas,Menlo,monospace}
+  :not(pre) > code{background:#eef4f8;color:var(--navy);padding:1px 5px;border-radius:3px;font-size:12px}
+  .pergunta{background:#f1f8f4;border-left:4px solid #2a9d8f;padding:9px 14px;margin:10px 0;font-size:13px}
+  .pergunta b{color:#1d7a6e}
+  .nota,.dica,.fio{background:var(--note-bg);border-left:4px solid var(--navy);border-radius:4px;padding:10px 14px;margin:12px 0;font-size:12.8px}
+  .nota .titulo,.dica .titulo,.fio .titulo{font-weight:bold;color:var(--navy);display:block;margin-bottom:3px}
+  .atencao,.apoio,.observacao{background:var(--warn-bg);border-left:4px solid #e08e00;border-radius:4px;padding:10px 14px;margin:12px 0;font-size:12.8px}
+  .atencao .titulo,.observacao .titulo{font-weight:bold;color:#8a5c00;display:block;margin-bottom:3px}
+  .apoio b{color:#8a5c00}
+  .realizado,.fechamento{background:#eef7f2;border-left:4px solid #2a9d8f;border-radius:4px;padding:10px 14px;margin:12px 0;font-size:12.8px}
+  .realizado .titulo{font-weight:bold;color:#1d7a6e;display:block;margin-bottom:3px}
+  .fechamento{margin:20px 0 8px;font-size:13px}
+  .fechamento b{color:#1d7a6e}
+  .erro-comum{background:#fdecea;border-left:4px solid #d9534f;border-radius:4px;padding:10px 14px;margin:10px 0 22px;font-size:12.8px}
+  .erro-comum .titulo,.erro-comum b:first-child{font-weight:bold;color:#a83a32}
+  .erro-comum .titulo{display:block;margin-bottom:3px}
+  .checklist-final{background:var(--navy);color:#fff;padding:11px 16px;border-radius:4px;font-size:16px;margin-top:36px}
+  table{width:100%;border-collapse:collapse;margin:10px 0 20px;font-size:12.6px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px}
+  td{padding:7px 10px;border-bottom:1px solid #e3e9ec;vertical-align:top}
+  tr:nth-child(even) td{background:var(--zebra)}
+  td.correta{font-weight:bold;color:#1d7a6e}
+  .slides{white-space:nowrap;color:var(--navy);font-weight:bold}
+  .comentario{font-size:12.5px;color:#455a64;margin:0 0 18px}
+  .comentario b{color:#263238}
+  .conferencia{background:var(--zebra);border-left:4px solid var(--navy);border-radius:4px;padding:12px 16px;margin-top:16px;font-size:12.8px}
+  .conferencia li{margin-bottom:6px}
+  .comparacao{display:flex;gap:16px;margin:12px 0;flex-wrap:wrap}
+  .comparacao .lado{flex:1;min-width:280px}
+  .rotulo-antes,.rotulo-depois{display:inline-block;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:3px 3px 0 0}
+  .rotulo-antes{background:#d9534f}.rotulo-depois{background:#2a9d8f}
+  .caixa-antes{border:2px solid #d9534f;border-top:none;border-radius:0 0 6px 6px}
+  .caixa-depois{border:2px solid #2a9d8f;border-top:none;border-radius:0 0 6px 6px}
+  .caixa-antes pre,.caixa-depois pre{margin:0;border-radius:0}
+  .checklist li{list-style:none;margin-bottom:7px;padding-left:24px;position:relative;font-size:13px}
+  .checklist li::before{content:"✓";position:absolute;left:0;color:#2a9d8f;font-weight:bold}
+  .video-item{border:1px solid #e3e9ec;border-radius:6px;padding:10px 14px;margin-bottom:10px}
+  .video-item .titulo-video{font-weight:bold;color:var(--navy-dark);display:block;margin-bottom:2px}
+  .video-item .canal{color:#607d8b;font-size:12px}
+  .video-item .desc{margin:4px 0 0;font-size:12.6px}
+  .paleta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 18px}
+  .cor{width:140px;border:1px solid #cfd8dc;border-radius:8px;overflow:hidden;font-size:11.5px}
+  .cor .amostra{height:46px}
+  .cor .info{padding:6px 8px}
+  a{color:var(--navy)}
+  ul{margin-top:6px}
+  li{margin-bottom:5px}
+  hr{border:none;border-top:1px solid #cfd8dc;margin:26px 0}
+  .pagebreak{break-before:page}
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid #e3e9ec;color:#78909c;font-size:11px;text-align:center}
+  @media print{ .wrap{padding:0} a{color:var(--navy) !important;text-decoration:underline} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Documento Funcional — AgendaPet Web</h1>
+<p class="subtitle">Painel de agendamentos do pet shop Patinhas &amp; Cia — o que construir, para quem, e como deve parecer</p>
+<p class="meta">
+  Desenvolvimento Front-End [React] T4 | Módulo 1 | Semanas 13 e 14 | Projeto: <b>Mini-Projeto Avaliativo M1.2 (AgendaPet Web)</b><br>
+  Leia este documento <b>primeiro</b>: ele diz <i>o quê</i> e <i>por quê</i>. O documento <b>Refinamento Técnico</b> diz <i>como</i> (arquivos, funções, contratos de dados e modelos de código). O <b>enunciado oficial</b> (.docx) traz o prazo, a pontuação e o checklist de entrega.
+</p>
+
+<h2 class="section">1. Visão geral</h2>
+<table>
+  <tr><th>Item</th><th>Descrição</th></tr>
+  <tr><td>Produto</td><td><b>AgendaPet Web</b> — painel web (HTML + CSS + JavaScript puros, sem bibliotecas) + scripts de terminal em Node.js</td></tr>
+  <tr><td>Cliente</td><td><b>Patinhas &amp; Cia</b>, pet shop de bairro (banho, tosa, consulta, vacina, adestramento e hospedagem), empresa fictícia</td></tr>
+  <tr><td>Problema-âncora</td><td>Os agendamentos são feitos por WhatsApp e caderno: horários marcados duas vezes, atendimentos em feriados sem aviso, endereços anotados errado nas visitas a domicílio e nenhuma noção de quanto o dia rendeu.</td></tr>
+  <tr><td>Por que isso importa</td><td>Um(a) dev júnior recebe um pedido real de cliente, um backlog e uma sprint. Este projeto simula essa rotina: <b>planejar, estimar, entregar por tickets, revisar, depurar e apresentar</b>.</td></tr>
+  <tr><td>Como o trabalho acontece</td><td><b>Sprint de 2 semanas</b> (16/10 a 02/11/2026): Sprint Planning → um ticket por branch com Pull Request → Sprint Review (apresentação em live coding no Google Meet) → Retrospectiva (README).</td></tr>
+  <tr><td>Resultado esperado</td><td>Atendente agenda com validação e vê a agenda do dia; dona da loja vê o fechamento; o mesmo cálculo roda no <b>terminal</b> com Node.js.</td></tr>
+</table>
+
+<h2 class="section">2. Quem usa</h2>
+<table>
+  <tr><th>Persona</th><th>Contexto</th><th>O que precisa</th></tr>
+  <tr><td><b>Bia, atendente</b></td><td>Trabalha em pé na bancada, com o <b>celular ou tablet</b> numa mão e muitas vezes com a outra ocupada segurando um pet</td><td>Botões grandes; formulário curto e sem erros bobos; ver rápido a agenda do dia; ser avisada de atendimentos próximos</td></tr>
+  <tr><td><b>Seu Henrique, dono da loja</b></td><td>Fecha o caixa no fim do dia e precisa confiar nos números</td><td>Faturamento só do que foi <b>concluído</b>; quanto ainda vai receber; quantos atendimentos por serviço; relatório também no terminal</td></tr>
+  <tr><td><b>Rafael, atendente que usa só o teclado</b></td><td>Navega com Tab, Enter e Espaço, às vezes com leitor de tela</td><td>Tudo alcançável por teclado, foco bem visível, erros anunciados, atalhos (<kbd>N</kbd>, <kbd>/</kbd>, <kbd>Esc</kbd>)</td></tr>
+</table>
+
+<h2 class="section">3. Escopo</h2>
+<table>
+  <tr><th>Nível</th><th>O que entra</th></tr>
+  <tr><td><b>Caminho-base</b> (obrigatório)</td><td>Página semântica e acessível · catálogo de serviços por <code>fetch</code> com 3 estados · formulário com validação · endereço por CEP · alerta de feriados com cache · agenda do dia com busca, filtro e atalhos · regras de negócio com classes e herança · persistência no <code>localStorage</code> · relógio e lembretes · layout responsivo · projeto Node.js com ESM e CommonJS · depuração com relatório de bug</td></tr>
+  <tr><td><b>⭐ Bônus</b> (até +0,5)</td><td>Publicar no GitHub Pages · testes com <code>node --test</code> · baixar a agenda como arquivo (<code>Blob</code>) · estilos de impressão (<code>@media print</code>)</td></tr>
+  <tr><td><b>Fora do escopo</b></td><td>Login, banco de dados em servidor, pagamento, envio real de WhatsApp/SMS, vários profissionais ou várias lojas, bibliotecas e frameworks</td></tr>
+</table>
+
+<h2 class="section pagebreak">4. Requisitos funcionais (Product Backlog)</h2>
+<p>Cada requisito é uma <b>história de usuário</b> (US). Os cenários completos de aceite estão no item 5.</p>
+<table>
+  <tr><th>ID</th><th>História (Como… quero… para…)</th><th>Regras principais</th><th>Prior.</th></tr>
+  <tr><td>US01</td><td>Como atendente, quero uma página organizada e navegável por teclado, para operar a agenda com rapidez e sem erros.</td><td>Landmarks (<code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>aside</code>, <code>footer</code>); um só <code>h1</code>; <code>lang</code>, <code>title</code>, <code>meta description</code>; skip link; <code>alt</code> nas imagens</td><td>Alta</td></tr>
+  <tr><td>US02</td><td>Como atendente, quero ver os serviços com preço e duração, para informar o tutor e escolher no agendamento.</td><td><code>data/servicos.json</code> (≥ 6 serviços) lido com <code>fetch</code> + <code>async/await</code>; estados carregando, erro (com "Tentar novamente") e sucesso</td><td>Alta</td></tr>
+  <tr><td>US03</td><td>Como atendente, quero registrar um agendamento com validação, para não perder dados nem marcar horários inválidos.</td><td>Campos obrigatórios; telefone com DDD; data não passada; horário dentro do funcionamento; erros na tela (sem <code>alert</code>) e foco no 1º inválido</td><td>Alta</td></tr>
+  <tr><td>US04</td><td>Como atendente, quero informar só o CEP em atendimento a domicílio, para que o endereço seja preenchido sem erros.</td><td>ViaCEP ao completar 8 dígitos; CEP inválido, inexistente e falha de rede com mensagens diferentes; preenchimento manual sempre possível</td><td>Média</td></tr>
+  <tr><td>US05</td><td>Como atendente, quero ser avisada quando a data for feriado, para confirmar com o tutor antes de agendar.</td><td>BrasilAPI por ano; cache no <code>localStorage</code> com validade; "Agendar mesmo assim" obrigatório; API fora do ar não bloqueia</td><td>Média</td></tr>
+  <tr><td>US06</td><td>Como atendente, quero ver, buscar e atualizar os agendamentos do dia, para acompanhar o fluxo da loja.</td><td>Lista por horário; busca em tempo real; filtro por status; concluir/cancelar; detalhes expansíveis; atalhos <kbd>N</kbd>, <kbd>/</kbd>, <kbd>Esc</kbd>; realce no mouse</td><td>Alta</td></tr>
+  <tr><td>US07</td><td>Como dona do pet shop, quero que o sistema calcule valores, impeça conflitos e feche o dia, para saber quanto a loja faturou.</td><td>Classes com herança (taxa domiciliar); conflito de horário; protocolo sequencial (closure); callbacks; fechamento com métodos de array</td><td>Alta</td></tr>
+  <tr><td>US08</td><td>Como atendente, quero que a agenda continue ali ao recarregar a página, para não perder o trabalho do dia.</td><td><code>localStorage</code> (agenda, filtro, tema) com <code>try/catch</code>; "Limpar meus dados" só das chaves do projeto; exportar JSON</td><td>Alta</td></tr>
+  <tr><td>US09</td><td>Como atendente, quero ser lembrada dos próximos atendimentos, para receber os tutores sem atrasar.</td><td><code>setInterval</code> (30 s) para relógio e lembretes; <code>setTimeout</code> para o toast; lembrete com ≤ 15 min; "Atrasado"; pausar/retomar</td><td>Média</td></tr>
+  <tr><td>US10</td><td>Como atendente, quero usar o painel no celular ou tablet na bancada, com letras legíveis e botões fáceis de tocar.</td><td>Flexbox; mobile-first; 360/768/1280 px; variáveis CSS; sem <code>!important</code> e sem seletores de id; <code>:focus-visible</code>; contraste ≥ 4,5:1</td><td>Alta</td></tr>
+  <tr><td>US11</td><td>Como dona do pet shop, quero fechar o dia pelo terminal e validar os dados exportados, para conferir o caixa fora do navegador.</td><td><code>package.json</code> com scripts; <code>devDependency</code> local; ESM (<code>fechamento-dia.js</code>) e CommonJS (<code>validar-agenda.cjs</code>); README: global vs local e CJS vs ESM</td><td>Alta</td></tr>
+  <tr><td>US12</td><td>Como pessoa desenvolvedora, quero investigar um defeito com o depurador, para corrigir a causa e não só o sintoma.</td><td><code>.vscode/launch.json</code>; breakpoint, condicional/logpoint, Watch e Call Stack; <code>docs/bug-report.md</code> com evidências</td><td>Média</td></tr>
+</table>
+
+<h2 class="section pagebreak">5. Cenários de aceite (Dado · Quando · Então)</h2>
+<p>Um ticket só está <b>pronto</b> quando todos os cenários da história passam rodando o projeto a partir de um clone limpo.</p>
+<table>
+  <tr><th>US</th><th>Cenário</th></tr>
+  <tr><td>US01</td><td><b>Dado</b> a página aberta, <b>quando</b> navego só com <kbd>Tab</kbd>, <b>então</b> o primeiro foco é o "Ir para o conteúdo" e todo controle recebe foco visível.<br><b>Dado</b> o HTML, <b>então</b> há um único <code>h1</code>, títulos sem saltos, <code>lang="pt-BR"</code>, <code>title</code> e <code>meta description</code>.</td></tr>
+  <tr><td>US02</td><td><b>Dado</b> o servidor local, <b>quando</b> a página abre, <b>então</b> aparece "carregando" e depois os 7 serviços com preço e duração.<br><b>Dado</b> o caminho do JSON quebrado (aponte o <code>fetch</code> para um arquivo que não existe), <b>então</b> aparece erro amigável com "Tentar novamente" e nenhuma exceção no console.</td></tr>
+  <tr><td>US03</td><td><b>Dado</b> o formulário vazio, <b>quando</b> envio, <b>então</b> aparecem mensagens na tela (sem <code>alert</code>) e o foco vai ao primeiro campo inválido.<br><b>Dado</b> data passada ou horário fora do funcionamento, <b>quando</b> envio, <b>então</b> não salva e a mensagem explica o motivo.<br><b>Dado</b> dados válidos, <b>quando</b> envio, <b>então</b> a página não recarrega, mostra confirmação e o item entra na agenda.</td></tr>
+  <tr><td>US04</td><td><b>Dado</b> o CEP 01001-000, <b>quando</b> completo os 8 dígitos, <b>então</b> rua, bairro, cidade e UF são preenchidos.<br><b>Dado</b> CEP inexistente, formato curto ou sem rede, <b>então</b> cada caso mostra uma mensagem diferente e o preenchimento manual continua possível.</td></tr>
+  <tr><td>US05</td><td><b>Dado</b> o dia 25/12, <b>quando</b> escolho a data, <b>então</b> vejo o nome do feriado e só salvo após marcar "Agendar mesmo assim".<br><b>Dado</b> que consultei o ano uma vez, <b>quando</b> escolho outra data, <b>então</b> não há nova requisição (cache).<br><b>Dado</b> a API indisponível, <b>então</b> aparece aviso e posso continuar.</td></tr>
+  <tr><td>US06</td><td><b>Dado</b> vários agendamentos, <b>então</b> a lista está ordenada por horário, com contador e mensagem para lista vazia.<br><b>Dado</b> a busca ativa, <b>quando</b> digito "sonia", <b>então</b> filtra em tempo real (ignora acento); <kbd>/</kbd> foca a busca, <kbd>Esc</kbd> limpa, <kbd>N</kbd> leva ao formulário (e nada disso dispara enquanto digito em um campo).<br><b>Dado</b> um item, <b>quando</b> clico em Concluir ou Cancelar, <b>então</b> o status muda sem recarregar.</td></tr>
+  <tr><td>US07</td><td><b>Dado</b> um agendamento domiciliar, <b>então</b> o valor inclui a taxa de deslocamento e o resumo mostra o endereço.<br><b>Dado</b> um horário ocupado, <b>quando</b> tento salvar outro ativo nele, <b>então</b> o sistema impede e informa o conflito; se o primeiro for cancelado, o horário é liberado.<br><b>Dado</b> três agendamentos, <b>então</b> os protocolos são AP-0001, AP-0002, AP-0003.<br><b>Dado</b> o fechamento, <b>então</b> o faturamento soma só os concluídos e há contagem por serviço e de cancelados.</td></tr>
+  <tr><td>US08</td><td><b>Dado</b> agendamentos salvos, <b>quando</b> recarrego (F5), <b>então</b> agenda, filtro e tema são restaurados.<br><b>Dado</b> um valor corrompido no <code>localStorage</code>, <b>então</b> a página abre normalmente.<br><b>Dado</b> "Limpar meus dados", <b>então</b> só as chaves <code>agendapet:*</code> são removidas.</td></tr>
+  <tr><td>US09</td><td><b>Dado</b> um atendimento hoje, <b>então</b> o texto "próximo atendimento em X min" atualiza sozinho.<br><b>Dado</b> um atendimento atrasado ou a 15 min ou menos, <b>então</b> há destaque ou lembrete visual.<br><b>Dado</b> "Pausar lembretes", <b>então</b> a atualização para (<code>clearInterval</code>) e volta ao retomar, sem timers duplicados.</td></tr>
+  <tr><td>US10</td><td><b>Dado</b> 360, 768 e 1280 px de largura, <b>então</b> não há rolagem horizontal e o layout se reorganiza.<br><b>Dado</b> o CSS, <b>então</b> há Flexbox, variáveis, 2 ou mais breakpoints, <code>:focus-visible</code>, nenhum <code>!important</code> e nenhum seletor de id.</td></tr>
+  <tr><td>US11</td><td><b>Dado</b> um clone limpo, <b>quando</b> rodo <code>npm install</code> e <code>npm start</code>, <b>então</b> a página abre pelo servidor local.<br><b>Dado</b> <code>npm run fechamento</code>, <b>então</b> o terminal imprime o fechamento usando os módulos de <code>js/dominio/</code>.<br><b>Dado</b> <code>npm run validar:erro</code>, <b>então</b> o script lista os erros e termina com código 1.</td></tr>
+  <tr><td>US12</td><td><b>Dado</b> o VS Code, <b>quando</b> pressiono F5, <b>então</b> o script de Node inicia pelo <code>launch.json</code> e para no breakpoint.<br><b>Dado</b> <code>docs/bug-report.md</code>, <b>então</b> constam passos, causa raiz, evidência e correção ligada a um commit/PR.</td></tr>
+</table>
+
+<h2 class="section">6. Regras de negócio</h2>
+<table>
+  <tr><th>ID</th><th>Regra</th></tr>
+  <tr><td>RN01</td><td><b>Funcionamento:</b> das 08:00 às 18:00, horários de 30 em 30 minutos. O atendimento precisa <b>terminar</b> até 18:00 (banho e tosa de 120 min não pode começar depois de 16:00).</td></tr>
+  <tr><td>RN02</td><td><b>Conflito:</b> não pode haver dois agendamentos <b>ativos</b> (Agendado ou Concluído) no mesmo dia e horário. <b>Cancelado libera</b> o horário.</td></tr>
+  <tr><td>RN03</td><td><b>Domicílio:</b> só serviços marcados como domiciliares (adestramento e hospedagem são só na loja). Taxa de deslocamento: <b>R$ 15</b> se a casa é em São Paulo/SP; <b>R$ 30</b> em outra cidade. <i>(Você pode adotar outro critério de taxa, desde que registre no README.)</i></td></tr>
+  <tr><td>RN04</td><td><b>Valor do agendamento:</b> preço do serviço (+ taxa, se domiciliar).</td></tr>
+  <tr><td>RN05</td><td><b>Status:</b> nasce <b>Agendado</b>; pode virar <b>Concluído</b> ou <b>Cancelado</b>. Concluído e Cancelado ficam travados (botões desabilitados).</td></tr>
+  <tr><td>RN06</td><td><b>Fechamento do dia:</b> faturamento = soma dos <b>Concluídos</b>; "a receber" = soma dos <b>Agendados</b>; cancelados não entram em valor; "por serviço" conta os ativos. O dia está <b>encerrado</b> quando não resta nenhum Agendado.</td></tr>
+  <tr><td>RN07</td><td><b>Protocolo:</b> <code>AP-0001</code>, <code>AP-0002</code>… sequencial, sem repetir; continua do maior número já salvo.</td></tr>
+  <tr><td>RN08</td><td><b>Feriado:</b> em feriado nacional é preciso confirmar "Agendar mesmo assim". Se não foi possível verificar, o sistema avisa e <b>não</b> bloqueia.</td></tr>
+  <tr><td>RN09</td><td><b>Lembrete:</b> quando faltarem 15 minutos ou menos para o próximo atendimento de hoje. <b>Atrasado</b> = ainda Agendado e o horário já passou.</td></tr>
+</table>
+
+<h2 class="section">7. Requisitos não funcionais</h2>
+<table>
+  <tr><th>Tema</th><th>Requisito</th></tr>
+  <tr><td>Acessibilidade</td><td>Estrutura semântica, <code>label for</code>, <code>aria-live</code>/<code>role="alert"</code> para mensagens, foco visível, skip link, contraste mínimo 4,5:1, informação nunca só pela cor. Meta: Lighthouse de Acessibilidade e SEO ≥ 90</td></tr>
+  <tr><td>Responsividade</td><td>Mobile-first; sem rolagem horizontal em 360, 768 e 1280 px; alvos de toque ≥ 44 px</td></tr>
+  <tr><td>Resiliência</td><td>Nenhuma falha de API ou de <code>localStorage</code> pode "quebrar" a página: sempre há mensagem e caminho alternativo</td></tr>
+  <tr><td>Segurança básica</td><td>Texto digitado entra na tela com <code>textContent</code> (nunca <code>innerHTML</code>); nenhuma chave, token ou dado pessoal real no repositório</td></tr>
+  <tr><td>Dados no navegador</td><td>Só chaves com prefixo <code>agendapet:</code>; "Limpar" não pode apagar dados de outros sistemas</td></tr>
+  <tr><td>Qualidade de código</td><td>Regra de negócio em <code>js/dominio/</code> (sem DOM); <code>const</code>/<code>let</code> (nunca <code>var</code>); funções pequenas; nomes claros; sem código morto</td></tr>
+  <tr><td>Compatibilidade</td><td>Navegadores atuais (Chrome, Edge, Firefox); Node.js 20 ou superior</td></tr>
+  <tr><td>Privacidade</td><td>Os dados de agendamento ficam apenas no navegador da pessoa usuária; as consultas externas enviam só o CEP e o ano</td></tr>
+</table>
+
+<h2 class="section pagebreak">8. Mapa da tela (wireframe)</h2>
+<pre><code>DESKTOP (≥ 1024px) — duas colunas
+┌──────────────────────────────────────────────────────────────────────┐
+│ [skip link: "Ir para o conteúdo"]                       (só no foco) │
+│ HEADER [logo] Patinhas &amp; Cia · H1 AgendaPet Web   Agora 14:32        │
+│        [Pausar lembretes] [Tema escuro]  NAV: Novo · Agenda · Fecham.│
+├──────────────────────────────────────────────────────────────────────┤
+│ MAIN                                                                 │
+│ ┌ lembrete (role=status): "Lembrete: Bela (Banho) às 14:40, em 8 min"┐│
+│ ├────────────────────────────┬─────────────────────────────────────┤│
+│ │ SECTION Novo agendamento   │ SECTION Agenda do dia                ││
+│ │  Tutor / Telefone          │  [Dia] [Buscar tutor ou pet] [Status]││
+│ │  Pet / Espécie / Serviço   │  Próximo atendimento: 14:40 — Bela…  ││
+│ │  Data / Horário            │  3 agendamentos                      ││
+│ │  [aviso de feriado]        │  ┌ 14:00 Bela · Banho  [Agendado]   ┐││
+│ │  [x] Atendimento domiciliar│  │ Camila (Domiciliar)  R$ 75,00    │││
+│ │  FIELDSET Endereço (CEP…)  │  │ [Concluir] [Cancelar]            │││
+│ │  Observações               │  └──────────────────────────────────┘││
+│ │  [Salvar agendamento]      │ SECTION Fechamento do dia            ││
+│ │ ASIDE Serviços e preços    │  Atend. · Concl. · Agend. · Cancel.  ││
+│ │  Banho R$ 60 · 60 min …    │  Faturamento · A receber             ││
+│ │                            │  Tabela por serviço                  ││
+│ │                            │  [Exemplo] [Exportar] [Limpar dados] ││
+│ │                            │ ASIDE Atalhos de teclado             ││
+│ └────────────────────────────┴─────────────────────────────────────┘│
+├──────────────────────────────────────────────────────────────────────┤
+│ FOOTER  AgendaPet Web — projeto de estudo                            │
+└──────────────────────────────────────────────────────────────────────┘
+ [TOAST fixo no rodapé da tela: "Agendamento AP-0003 salvo…" some em 4 s]
+
+CELULAR (360px) — UMA coluna, nesta ordem:
+ header › lembrete › Novo agendamento › Serviços e preços › Agenda do dia ›
+ Fechamento do dia › Atalhos › footer</code></pre>
+
+<h2 class="section">9. Estados da interface e textos (microcopy)</h2>
+<table>
+  <tr><th>Situação</th><th>Tipo</th><th>Texto exibido</th><th>Some sozinho?</th></tr>
+  <tr><td>Carregando o catálogo</td><td>carregando</td><td>"Carregando serviços…"</td><td>Some ao concluir</td></tr>
+  <tr><td>Falha ao carregar o catálogo</td><td>erro</td><td>"Não foi possível carregar os serviços (erro HTTP 404)." + botão "Tentar novamente"</td><td><b>Não</b></td></tr>
+  <tr><td>Sem rede no catálogo</td><td>erro</td><td>"Sem conexão para carregar os serviços." + botão "Tentar novamente"</td><td><b>Não</b></td></tr>
+  <tr><td>Erro de validação (por campo)</td><td>erro</td><td>"Informe o nome do tutor (mínimo 3 letras)." · "Informe um telefone com DDD (10 ou 11 dígitos)." · "Não é possível agendar em uma data que já passou." · "Fora do funcionamento: atendemos das 08:00 às 18:00, em horários de 30 em 30 minutos, e o serviço precisa terminar até o fechamento." · "Esse horário de hoje já passou."</td><td><b>Não</b> (até corrigir)</td></tr>
+  <tr><td>Conflito de horário</td><td>erro</td><td>"Já existe um atendimento às {hora} em {dd/mm/aaaa}. Escolha outro horário."</td><td><b>Não</b></td></tr>
+  <tr><td>Domiciliar indisponível</td><td>informativo</td><td>"&quot;{serviço}&quot; é realizado somente na loja."</td><td>Troca ao mudar o serviço</td></tr>
+  <tr><td>Buscando CEP</td><td>carregando</td><td>"Buscando endereço…"</td><td>É substituído</td></tr>
+  <tr><td>CEP encontrado</td><td>sucesso</td><td>"Endereço preenchido. Confira e informe o número."</td><td>Não</td></tr>
+  <tr><td>CEP com formato inválido</td><td>erro</td><td>"O CEP deve ter 8 dígitos."</td><td><b>Não</b></td></tr>
+  <tr><td>CEP não encontrado</td><td>erro</td><td>"CEP não encontrado. Preencha o endereço manualmente."</td><td><b>Não</b></td></tr>
+  <tr><td>Sem rede / serviço de CEP fora</td><td>erro</td><td>"Sem conexão com o serviço de CEP. Preencha o endereço manualmente." · "O serviço de CEP está indisponível agora. Preencha o endereço manualmente."</td><td><b>Não</b></td></tr>
+  <tr><td>Data é feriado</td><td>alerta</td><td>"25/12/2026 é feriado: Natal. Confirme com o tutor antes de agendar." + caixa "Agendar mesmo assim"</td><td>Some ao trocar a data</td></tr>
+  <tr><td>Feriado sem confirmar</td><td>erro</td><td>"Marque &quot;Agendar mesmo assim&quot; para agendar em um feriado."</td><td><b>Não</b></td></tr>
+  <tr><td>Feriados indisponíveis</td><td>alerta</td><td>"Não foi possível verificar se a data é feriado agora. Você pode continuar o agendamento."</td><td>Some ao trocar a data</td></tr>
+  <tr><td>Agendamento salvo</td><td>sucesso (toast)</td><td>"Agendamento AP-0001 salvo: Thor, 21/10/2026 às 09:00."</td><td><b>Sim, em 4 s</b></td></tr>
+  <tr><td>Concluído / cancelado</td><td>sucesso / info (toast)</td><td>"AP-0001 (Thor) concluído." · "AP-0001 (Thor) cancelado. O horário foi liberado."</td><td><b>Sim, em 4 s</b></td></tr>
+  <tr><td>Lembretes pausados / retomados</td><td>info (toast)</td><td>"Lembretes pausados." · "Lembretes retomados."</td><td><b>Sim, em 4 s</b></td></tr>
+  <tr><td>Lembrete de atendimento</td><td>alerta</td><td>"Lembrete: Bela (Banho) às 14:40, em 8 min."</td><td>Some quando passa de 15 min ou ao pausar</td></tr>
+  <tr><td>Lista vazia</td><td>informativo</td><td>"Nenhum agendamento para este dia. Use o formulário para criar o primeiro." · "Nenhum agendamento corresponde à busca ou ao filtro."</td><td>Some ao haver itens</td></tr>
+  <tr><td>Limpar dados (2 etapas)</td><td>botão</td><td>"Limpar meus dados" → "Clique de novo para confirmar" (volta em 4 s) → toast "Dados da AgendaPet removidos (N itens)."</td><td>Botão volta sozinho</td></tr>
+</table>
+<div class="nota"><span class="titulo">Regra de acessibilidade</span>Mensagem de erro <b>não desaparece sozinha</b> e <b>não depende só da cor</b>: sempre tem texto, e o campo fica com borda destacada e <code>aria-invalid="true"</code>. Toasts usam <code>role="status"</code> (anunciados sem roubar o foco).</div>
+
+<h2 class="section pagebreak">10. Identidade visual</h2>
+<h3 class="bloco">10.1 Paleta (tokens CSS)</h3>
+<p>Todas as cores moram em <b>variáveis CSS</b> no <code>:root</code>; o tema escuro só redefine as variáveis. Você pode criar a sua identidade, desde que mantenha o <b>contraste mínimo de 4,5:1</b> para texto.</p>
+<div class="paleta">
+  <div class="cor"><div class="amostra" style="background:#00695c"></div><div class="info"><b>--primaria</b><br>#00695c<br>botões, títulos</div></div>
+  <div class="cor"><div class="amostra" style="background:#004d40"></div><div class="info"><b>--primaria-escura</b><br>#004d40<br>hover</div></div>
+  <div class="cor"><div class="amostra" style="background:#ffb300"></div><div class="info"><b>--acento</b><br>#ffb300<br>atrasado, lembrete (nunca texto)</div></div>
+  <div class="cor"><div class="amostra" style="background:#f3f7f6"></div><div class="info"><b>--fundo</b><br>#f3f7f6<br>fundo da página</div></div>
+  <div class="cor"><div class="amostra" style="background:#e8f1ef"></div><div class="info"><b>--superficie-2</b><br>#e8f1ef<br>blocos internos</div></div>
+  <div class="cor"><div class="amostra" style="background:#1c2b2d"></div><div class="info"><b>--texto</b><br>#1c2b2d<br>texto principal</div></div>
+  <div class="cor"><div class="amostra" style="background:#b3261e"></div><div class="info"><b>--erro</b><br>#b3261e<br>erros, cancelar</div></div>
+  <div class="cor"><div class="amostra" style="background:#1b5e20"></div><div class="info"><b>--sucesso</b><br>#1b5e20<br>concluído</div></div>
+  <div class="cor"><div class="amostra" style="background:#0d47a1"></div><div class="info"><b>--info</b><br>#0d47a1<br>agendado, próximo</div></div>
+  <div class="cor"><div class="amostra" style="background:#0b57d0"></div><div class="info"><b>--foco</b><br>#0b57d0<br>anel de foco</div></div>
+</div>
+<h3 class="bloco">10.2 Tipografia e espaçamento</h3>
+<ul>
+  <li><b>Fonte:</b> pilha do sistema (<code>"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif</code>) — nada para baixar.</li>
+  <li><b>Tamanhos:</b> texto 16 px; títulos de cartão 19 px; horário do item 18 px; textos secundários 14 px (nunca menos que 12,8 px).</li>
+  <li><b>Espaçamento:</b> unidade de 16 px (<code>--espaco</code>); cantos arredondados de 10 px (<code>--raio</code>).</li>
+</ul>
+<h3 class="bloco">10.3 Logo e ícones</h3>
+<p>Marca simples em <b>SVG</b> (patinha branca em círculo verde) em <code>img/logo.svg</code> e <code>img/favicon.svg</code>. O logo é decorativo ao lado do nome da loja: <code>alt=""</code>.</p>
+<h3 class="bloco">10.4 Componentes</h3>
+<table>
+  <tr><th>Componente</th><th>Como deve ser</th></tr>
+  <tr><td>Botão principal / secundário / perigo</td><td>Altura mínima 44 px; principal = fundo verde; secundário = borda verde; perigo = borda vermelha. Desabilitado: opacidade reduzida e cursor "não permitido"</td></tr>
+  <tr><td>Campo de formulário</td><td>Rótulo sempre visível acima; altura mínima 44 px; borda vermelha de 2 px + mensagem abaixo no erro</td></tr>
+  <tr><td>Cartão de agendamento</td><td>Borda lateral colorida pelo status (verde = agendado/concluído, vermelho = cancelado, âmbar = atrasado); hora em destaque; selo de status; valor à direita; detalhes expansíveis</td></tr>
+  <tr><td>Selo de status</td><td>Pílula com cor <b>e</b> texto ("Agendado", "Concluído", "Cancelado", "Atrasado")</td></tr>
+  <tr><td>Toast</td><td>Fixo no rodapé da tela; cor por tipo; <b>não bloqueia cliques</b>; some em 4 s</td></tr>
+  <tr><td>Tabela do fechamento</td><td>Cabeçalho com <code>th scope="col"</code> e legenda para leitor de tela</td></tr>
+</table>
+<h3 class="bloco">10.5 Princípios visuais</h3>
+<ul>
+  <li>Quem atende está com pressa: <b>poucos cliques</b>, textos curtos e botões grandes.</li>
+  <li>Estado nunca só por cor: sempre há texto ou ícone junto.</li>
+  <li>O tema escuro deve ser tão legível quanto o claro (confira o contraste nos dois).</li>
+</ul>
+
+<h2 class="section pagebreak">11. Plano da sprint e entregáveis</h2>
+<table>
+  <tr><th>Dia</th><th>Cerimônia</th><th>Tickets</th><th>Pronto quando</th></tr>
+  <tr><td>Sex 16/10</td><td>Liberação e Sprint Planning</td><td>—</td><td>Repositório, Kanban com 12 cartões estimados, <code>planejamento/sprint-planning.md</code>, branch <code>chore/setup-projeto</code></td></tr>
+  <tr><td>Ter 20/10</td><td>Semana 13</td><td>US01, US10 (base), US02</td><td>Página semântica, layout responsivo e catálogo por <code>fetch</code> com 3 estados</td></tr>
+  <tr><td>Qui 22/10</td><td>Semana 13</td><td>US03, US04, US05</td><td>Formulário validado; CEP e feriados funcionando, com falhas tratadas</td></tr>
+  <tr><td>Sex 23/10</td><td>Semana 13</td><td>US06, US07</td><td>Agenda do dia, classes, herança, conflito e fechamento (testados no Node)</td></tr>
+  <tr><td>Ter 27/10</td><td>Semana 14</td><td>US08, US09</td><td>Dados sobrevivem ao F5; relógio e lembretes com pausa</td></tr>
+  <tr><td>Qui 29/10</td><td>Semana 14</td><td>US11, US12</td><td>Scripts npm, ESM e CommonJS; depuração e relatório de bug</td></tr>
+  <tr><td>Sex 30/10</td><td>Review e Retrospectiva</td><td>Ajustes</td><td>Acessibilidade, 360 px, README com retrospectiva; apresentação em live coding no Google Meet (15 min por estudante, turma reunida)</td></tr>
+  <tr><td>02/11, 22h</td><td>Entrega no AVA</td><td>—</td><td>Projeto entregue no AVA (links do repositório GitHub e do Kanban) e código publicado no GitHub</td></tr>
+</table>
+<p><b>Entregáveis:</b> repositório público com <code>index.html</code>, <code>css/</code>, <code>js/</code> (incluindo <code>js/dominio/</code>), <code>data/</code>, <code>scripts/</code>, <code>package.json</code> + <code>package-lock.json</code>, <code>.vscode/launch.json</code>, <code>.github/pull_request_template.md</code>, <code>planejamento/sprint-planning.md</code>, <code>docs/</code> (Kanban, depuração, relatório de bug) e <code>README.md</code>; link do Kanban; apresentação em live coding no Google Meet (Sprint Review, 15 minutos por estudante). A entrega precisa estar no AVA <b>e</b> no GitHub.</p>
+
+<h3 class="bloco">Definição de Pronto (para cada ticket)</h3>
+<ul class="checklist">
+  <li>Os cenários de aceite da história passam</li>
+  <li>Código em uma branch, commits no padrão <code>tipo(US##): descrição no imperativo</code>, Pull Request integrado à main</li>
+  <li>Sem erros no console; layout conferido em 360 px; teclado conferido</li>
+  <li>Cartão do Kanban em "Concluído" com o link do Pull Request</li>
+  <li>Você consegue explicar linha a linha o que entregou</li>
+</ul>
+
+<h3 class="bloco">Rubrica de avaliação (resumo; a oficial está no enunciado)</h3>
+<table>
+  <tr><th>Critério</th><th>Pontos</th><th>Evidência</th></tr>
+  <tr><td>01 Versionamento</td><td>0,5</td><td>≥ 5 branches <code>tipo/US##</code>, ≥ 12 commits no padrão, ≥ 5 Pull Requests com o modelo preenchido</td></tr>
+  <tr><td>02 Arquivos e README</td><td>0,5</td><td>Estrutura do projeto, <code>.gitignore</code>, README com decisões, global vs local, CJS vs ESM e retrospectiva</td></tr>
+  <tr><td>03 Apresentação em live coding (Sprint Review)</td><td>1,0</td><td>Todos os itens do 4.6 do enunciado, até 15 min, código e tela funcionando</td></tr>
+  <tr><td>04 Kanban e planejamento</td><td>0,5</td><td>4 colunas, 12 cartões estimados, links de branch e PR, <code>sprint-planning.md</code></td></tr>
+  <tr><td>05 HTML, formulário, a11y, SEO</td><td>1,0</td><td>US01 e US03</td></tr>
+  <tr><td>06 CSS</td><td>1,0</td><td>US10: Flexbox, especificidade, responsividade</td></tr>
+  <tr><td>07 DOM e eventos</td><td>1,0</td><td>US06: seletores, mouse, teclado, busca, atalhos</td></tr>
+  <tr><td>08 fetch</td><td>1,0</td><td>US02, US04, US05: 3 estados e erros distintos</td></tr>
+  <tr><td>09 localStorage e timers</td><td>1,0</td><td>US05, US08, US09</td></tr>
+  <tr><td>10 Regras de negócio e POO</td><td>1,0</td><td>US07: classes, herança, closure, callback, arrays</td></tr>
+  <tr><td>11 Node.js</td><td>1,0</td><td>US11: npm, ESM, CommonJS, global vs local</td></tr>
+  <tr><td>12 Depuração</td><td>0,5</td><td>US12: <code>launch.json</code>, <code>bug-report.md</code> e demonstração</td></tr>
+</table>
+
+<footer>Documento Funcional — AgendaPet Web · Desenvolvimento Front-End [React] T4 · Módulo 1 · Semanas 13 e 14</footer>
+</div>
+</body>
+</html>
