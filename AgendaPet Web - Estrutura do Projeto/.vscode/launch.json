@@ -1,0 +1,37 @@
+// launch.json — CONFIGURAÇÕES DE DEPURAÇÃO DO VS CODE (tecla F5)   (ticket: US12)
+//
+// O QUE É: cada item de "configurations" aparece no painel "Executar e
+// Depurar" do VS Code. Este arquivo aceita comentários (é JSONC).
+//
+// O QUE FAZER: crie uma configuração para cada coisa que você quer depurar:
+//   1) o script de fechamento (Node)
+//   2) o validador (CommonJS)
+//   3) os testes (node --test)
+//   4) a página no navegador (Edge ou Chrome), com o "npm start" rodando
+//
+// EXEMPLO GENÉRICO (depurar um script Node com argumentos):
+//   {
+//     "name": "Depurar relatório (Node)",
+//     "type": "node",
+//     "request": "launch",
+//     "program": "${workspaceFolder}/scripts/meu-script.js",
+//     "args": ["--mes=10"],
+//     "console": "integratedTerminal",
+//     "skipFiles": ["<node_internals>/**"]
+//   }
+//
+// EXEMPLO GENÉRICO (depurar a página no navegador):
+//   {
+//     "name": "Depurar a página (Edge)",
+//     "type": "msedge",                    // ou "chrome"
+//     "request": "launch",
+//     "url": "http://localhost:5500",      // a porta usada pelo "npm start"
+//     "webRoot": "${workspaceFolder}"
+//   }
+//
+// COMO USAR O DEPURADOR: clique à esquerda do número da linha para criar um
+// breakpoint, aperte F5 e use Variables, Watch e Call Stack para investigar.
+{
+  "version": "0.2.0",
+  "configurations": []
+}
