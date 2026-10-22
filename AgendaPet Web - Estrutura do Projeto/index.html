@@ -27,6 +27,29 @@
         <footer>
         toast (mensagem rápida, escondida)
 
+  ATENÇÃO — O CABEÇALHO PRECISA TER ESTA HIERARQUIA (a responsividade depende dela)
+  O css/style.css posiciona o menu pelo seletor .topo__nav, que precisa ser
+  FILHO DIRETO do <header class="topo">, IRMÃO de .topo__marca e
+  .topo__ferramentas. NÃO coloque o <nav> dentro de .topo__ferramentas:
+  senão as regras de 640px (menu em linha própria) e de 1024px (menu na
+  mesma linha, sem quebrar) deixam de valer e o cabeçalho "se embola" no
+  celular e no tablet.
+
+    <header class="topo">
+      <div class="topo__marca"> logo + título (h1) </div>
+      <div class="topo__ferramentas"> relógio + botões (lembretes, tema) </div>
+      <nav class="topo__nav" aria-label="Seções da página">
+        <ul class="nav">
+          <li><a class="nav__link" href="#novo-agendamento">Novo agendamento</a></li>
+          ...
+        </ul>
+      </nav>
+    </header>
+
+  Do mesmo modo: o <footer class="rodape"> vem DEPOIS do </main> (e não
+  dentro dele), porque o <main class="principal"> tem largura máxima e
+  espaçamento próprios. Teste sempre em 390px, 768px e 1280px (DevTools).
+
   REGRAS DE OURO
   1) Um único <h1>. Os títulos das seções são <h2>, e os subtítulos <h3>.
      Não pule níveis.
